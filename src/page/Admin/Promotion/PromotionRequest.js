@@ -1,12 +1,16 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { IoIosSearch } from "react-icons/io";
 import { format } from 'date-fns';
 import axios from "axios";
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
+import { CiViewList } from "react-icons/ci";
+import Modal from 'react-modal';
 
 const PromotionRequest = () => {
+    const scrollRef = useRef(null);
+
     const [originalListPromotion, setOriginalListPromotion] = useState([]);
     const [listPromotion, setListPromotion] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -15,12 +19,36 @@ const PromotionRequest = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedRequestId, setSelectedRequestId] = useState(null);
 
-    const promotionsPerPage = 10;
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpenDetail, setIsModalOpenDetail] = useState(false);
+    const [selectedRequest, setSelectedRequest] = useState([]);
+    const [totalPages, setTotalPages] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const promotionPerPageOptions = [10, 15, 20, 25, 30, 35, 40, 45, 50];
+    const [searchQuery1, setSearchQuery1] = useState(''); // when click icon => search, if not click => not search
+    const [ascending, setAscending] = useState(false);
 
     useEffect(() => {
-        getPromotion();
+        if (scrollRef.current) {
+            scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, [currentPage]);
+    useEffect(() => {
+
         getCategory();
     }, []);
+    useEffect(() => {
+        if (searchQuery) {
+
+            handleSearch();
+
+        } else {
+
+            getPromotion();
+
+        }
+    }, [pageSize, currentPage, searchQuery, ascending]);
 
     const getCategory = async () => {
         try {
@@ -42,45 +70,122 @@ const PromotionRequest = () => {
         }
     };
 
+
     const getPromotion = async () => {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
                 throw new Error("No token found");
             }
-            const res = await axios.get('https://jssatsproject.azurewebsites.net/api/promotionRequest/getAll', {
+            const res = await axios.get(`https://jssatsproject.azurewebsites.net/api/promotionRequest/getall?ascending=${ascending}&pageIndex=${currentPage}&pageSize=${pageSize}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
             if (res && res.data && res.data.data) {
                 const promotions = res.data.data;
-                setOriginalListPromotion(promotions);
                 setListPromotion(promotions);
+                setTotalPages(res.data.totalPages);
             }
         } catch (error) {
-            console.error('Error fetching promotions:', error);
+            console.error('Error fetching staffs:', error);
+            if (error.response) {
+                console.error('Error response:', error.response.data);
+            } else if (error.request) {
+                console.error('Error request:', error.request);
+            } else {
+                console.error('Error message:', error.message);
+            }
         }
+    };
+
+    const handleDetailClick = async (id) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error("No token found");
+            }
+            const res = await axios.get(`https://jssatsproject.azurewebsites.net/api/promotionRequest/getById?id=${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            // console.log('check detail click', res)
+            if (res && res.data && res.data.data) {
+                const details = res.data.data[0];
+                // console.log('check detail click', res)
+                setSelectedRequest(details);
+                setIsModalOpenDetail(true); // Open modal when staff details are fetched
+            }
+        } catch (error) {
+            console.error('Error fetching staff details:', error);
+        }
+    };
+
+    const handleSort = () => {
+        setAscending(!ascending); // Toggle ascending state
+        setCurrentPage(1); // Reset to first page when sorting changes
     };
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
-
     const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value);
+        setSearchQuery1(e.target.value);
+    };
+    const handleSetQuery = async () => {
+        setSearchQuery(searchQuery1)
         setCurrentPage(1);
+    }
+
+    const handleSearch = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('No token found');
+            }
+            const res = await axios.get(
+                `https://jssatsproject.azurewebsites.net/api/promotionRequest/search?description=${searchQuery}&pageIndex=${currentPage}&pageSize=${pageSize}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            if (res && res.data && res.data.data) {
+                const searched = res.data.data;
+                setListPromotion(searched);
+                setTotalPages(res.data.totalPages);
+                // console.log('>>> check search', res)
+            }
+            else {
+                setListPromotion([]);
+                setTotalPages(0);
+            }
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+            if (error.response) {
+                console.error('Error response:', error.response.data);
+            } else if (error.request) {
+                console.error('Error request:', error.request);
+            } else {
+                console.error('Error message:', error.message);
+            }
+        }
+        // setSearchQuery1('');
     };
 
-    const handleSearch = () => {
-        let filteredPromotions = originalListPromotion;
+    const formatDateTime = (isoString) => {
+        const date = new Date(isoString);
 
-        if (searchQuery) {
-            filteredPromotions = filteredPromotions.filter((promotion) =>
-                promotion.description.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-        }
-        setListPromotion(filteredPromotions);
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const year = date.getFullYear();
+
+        return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
     };
 
     const getNamefromDescription = (value) => {
@@ -99,6 +204,8 @@ const PromotionRequest = () => {
     };
 
     const closeModal = () => {
+        setIsModalOpen(false);
+        setIsModalOpenDetail(false);
         setShowModal(false);
         setSelectedRequestId(null);
     };
@@ -172,81 +279,86 @@ const PromotionRequest = () => {
         }
     };
 
-
-
-    const indexOfLastPromotion = currentPage * promotionsPerPage;
-    const indexOfFirstPromotion = indexOfLastPromotion - promotionsPerPage;
-    const currentPromotions = listPromotion.slice(indexOfFirstPromotion, indexOfLastPromotion);
-
-    const totalPages = Math.ceil(listPromotion.length / promotionsPerPage);
-    const placeholders = Array.from({ length: promotionsPerPage - currentPromotions.length });
+    const placeholders = Array.from({ length: pageSize - listPromotion.length });
 
     return (
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center min-h-screen bg-white mx-5 pt-5 mb-5 rounded">
             <div>
-                <h1 className="text-2xl font-bold text-center mb-4">Promotion Request List</h1>
-                <div className="flex mb-4">
-                    <div className="relative">
+                <h1 className="text-3xl font-bold text-center text-blue-800 mb-4"> Promotion Request List</h1>
+                <div className="flex justify-between mb-4">
+                    <div className="flex items-center ml-2">
+                        <label className="block mb-1 mr-2">Page Size:</label>
+                        <select
+                            value={pageSize}
+                            onChange={(e) => {
+                                setPageSize(parseInt(e.target.value));
+                                setCurrentPage(1); // Reset to first page when page size changes
+                            }}
+                            className="px-3 py-2 border border-gray-300 rounded-md"
+                        >
+                            {promotionPerPageOptions.map((size) => (
+                                <option key={size} value={size}>{size}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="relative w-[400px]">
                         <input
                             type="text"
                             placeholder="Search by name"
-                            value={searchQuery}
+                            value={searchQuery1}
                             onChange={handleSearchChange}
-                            className="px-3 py-2 border border-gray-300 rounded-md w-[400px]"
+                            className="px-3 py-2 border border-gray-300 rounded-md w-full"
                         />
-                        <IoIosSearch className="absolute top-0 right-0 mr-3 mt-3 cursor-pointer text-gray-500" onClick={handleSearch} />
+                        <IoIosSearch className="absolute top-0 right-0 mr-3 mt-3 cursor-pointer text-gray-500" onClick={handleSetQuery} />
                     </div>
                 </div>
 
-                <div className="w-[1000px] overflow-hidden">
+                <div className="w-[1200px] overflow-hidden ">
                     <table className="font-inter w-full table-auto border-separate border-spacing-y-1 text-left">
-                        <thead className="w-full rounded-lg bg-[#222E3A]/[6%] text-base font-semibold text-white sticky top-0">
-                            <tr>
-                                <th className="whitespace-nowrap rounded-l-lg py-3 pl-3 text-sm font-normal text-[#212B36] bg-[#f6f8fa]">ID</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-normal text-[#212B36] bg-[#f6f8fa]">Name</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-normal text-[#212B36] bg-[#f6f8fa]">Description</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-normal text-[#212B36] bg-[#f6f8fa] text-center">Discount Rate</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-normal text-[#212B36] bg-[#f6f8fa]">From</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-normal text-[#212B36] bg-[#f6f8fa]">To</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-normal text-[#212B36] bg-[#f6f8fa] text-center">Status</th>
+                        <thead className="w-full rounded-lg bg-sky-300 text-base font-semibold text-white sticky top-0">
+                            <tr className="whitespace-nowrap text-xl font-bold text-[#212B36] ">
+                                <th className="py-3 pl-3 rounded-l-lg"></th>
+                                <th >Name</th>
+                                {/* <th >Description</th> */}
+                                <th className=" text-center">Discount Rate</th>
+                                <th >From</th>
+                                <th >To</th>
+                                <th >Status</th>
+                                <th className=" py-3 rounded-r-lg">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {currentPromotions.map((item, index) => (
-                                <tr key={index} className="cursor-pointer bg-[#f6f8fa] drop-shadow-[0_0_10px_rgba(34,46,58,0.02)] hover:shadow-2xl">
-                                    <td className="rounded-l-lg pl-3 text-sm font-normal text-[#637381] py-4">{item.requestId}</td>
-                                    <td className="text-sm font-normal text-[#637381] py-4">{getNamefromDescription(item.description)}</td>
-                                    <td className="text-sm font-normal text-[#637381] py-4">{getDescription(item.description)}</td>
-                                    <td className="text-sm font-normal text-[#637381] text-center py-4">{item.discountRate}</td>
-                                    <td className="text-sm font-normal text-[#637381] py-4">{format(new Date(item.startDate), 'dd/MM/yyyy')}</td>
-                                    <td className="text-sm font-normal text-[#637381] py-4">{format(new Date(item.endDate), 'dd/MM/yyyy')}</td>
-                                    <td className="text-sm font-normal text-[#637381] text-center">
+                            {listPromotion.map((item, index) => (
+                                <tr key={index} className="cursor-pointer font-normal text-[#637381] bg-[#f6f8fa] drop-shadow-[0_0_10px_rgba(34,46,58,0.02)] text-base hover:shadow-2xl">
+                                    <td className="rounded-l-lg pr-3 pl-5 py-4 text-black">{index + (currentPage - 1) * pageSize + 1}</td>
+                                    <td >{getNamefromDescription(item.description)}</td>
+                                    {/* <td>{getDescription(item.description)}</td> */}
+                                    <td className="text-center ">{item.discountRate}</td>
+                                    <td >{format(new Date(item.startDate), 'dd/MM/yyyy')}</td>
+                                    <td >{format(new Date(item.endDate), 'dd/MM/yyyy')}</td>
+                                    <td className=" text-center">
                                         {item.status === 'approved'
                                             ? (<span className="text-green-500 ">Approved</span>)
                                             : item.status === 'rejected' ? (
                                                 <span className="text-red-500">Rejected</span>
                                             ) : (<button
-                                                className="my-2 border border-white bg-[#4741b1d7] text-white rounded-md transition duration-200 ease-in-out hover:bg-[#1d3279] active:bg-[#4741b174] focus:outline-none"
+                                                className="my-2 border border-white bg-blue-600 text-white rounded-md transition duration-200 ease-in-out hover:bg-[#1d3279] active:bg-[#4741b174] focus:outline-none"
                                                 onClick={() => openModal(item.requestId)} // Open modal with requestId on button click
                                             >
                                                 {item.status}
                                             </button>)
                                         }
-                                        {/* <button
-                                            className="my-2 border border-white bg-[#4741b1d7] text-white rounded-md transition duration-200 ease-in-out hover:bg-[#1d3279] active:bg-[#4741b174] focus:outline-none"
-                                            onClick={() => openModal(item.requestId)} // Open modal with requestId on button click
-                                        >
-                                            {item.status}
-                                        </button> */}
 
                                     </td>
+                                    <td className="text-3xl  text-[#000099] pl-2"><CiViewList onClick={() => handleDetailClick(item.requestId)} /></td>
+
                                 </tr>
                             ))}
                             {placeholders.map((_, index) => (
                                 <tr key={`placeholder-${index}`} className="cursor-pointer bg-[#f6f8fa] drop-shadow-[0_0_10px_rgba(34,46,58,0.02)]">
                                     <td className="rounded-l-lg pl-3 text-sm font-normal text-[#637381] py-4">-</td>
-                                    <td className="text-sm font-normal text-[#637381] py-4">-</td>
                                     <td className="text-sm font-normal text-[#637381] text-center py-4">-</td>
+                                    <td className="text-sm font-normal text-[#637381] py-4">-</td>
                                     <td className="text-sm font-normal text-[#637381] py-4">-</td>
                                     <td className="text-sm font-normal text-[#637381] py-4">-</td>
                                     <td className="text-sm font-normal text-[#637381] py-4">-</td>
@@ -281,17 +393,64 @@ const PromotionRequest = () => {
                     handleStatusUpdate={handleStatusUpdate}
                 />
             )}
+            <Modal
+                isOpen={isModalOpenDetail}
+                onRequestClose={closeModal}
+                contentLabel="Product Details"
+                className="bg-white p-6 rounded-lg shadow-lg "
+                overlayClassName="fixed inset-0 z-30 bg-black bg-opacity-50 flex justify-center items-center"
+            >
+                {selectedRequest && (
+                    <div className="fixed inset-0 z-30 flex items-center justify-center z-10 bg-gray-800 bg-opacity-50">
+                        <div className="bg-white rounded-lg p-8 max-w-md w-full">
+                            <h2 className="text-xl font-bold text-blue-600 text-center mb-4">{selectedRequest.description && getNamefromDescription(selectedRequest.description)}</h2>
+                            <p className="text-base text-gray-700 mb-2"> <strong>Manager:</strong> {selectedRequest.managerName}</p>
+                            <p className="text-base text-gray-700 mb-2"><strong>Discount Rate: </strong>{selectedRequest.discountRate}</p>
+                            <p className="text-base text-gray-700 mb-2"><strong>Description: </strong>{selectedRequest.description && getDescription(selectedRequest.description)}</p>
+                            <p className="text-base text-gray-700 mb-2"><strong>Start Date: </strong>{selectedRequest.startDate && format(new Date(selectedRequest.startDate), 'dd/MM/yyyy')}</p>
+                            <p className="text-base text-gray-700 mb-2"><strong>End Date:</strong> {selectedRequest.endDate && format(new Date(selectedRequest.endDate), 'dd/MM/yyyy')}</p>
+                            <div >
+                                <p className="text-base text-gray-700 mb-2"><strong>Categories:</strong></p>
+                                <ul className="list-disc list-inside">
+                                    {selectedRequest.categories && selectedRequest.categories.map((category, index) => (
+                                        <li key={index} className="text-sm">{category.name}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <p className="text-base text-gray-700 mb-2"><strong>Create at:</strong> {selectedRequest.createdAt && formatDateTime(selectedRequest.createdAt)}</p>
+
+                            <p className="text-base text-gray-700 mb-2"><strong>Status: </strong>
+                                {selectedRequest.status === 'approved'
+                                    ? (<span className="text-green-500 ">Approved</span>)
+                                    : selectedRequest.status === 'rejected' ? (
+                                        <span className="text-red-500">Rejected</span>
+                                    ) : selectedRequest.status
+                                }
+                            </p>
+                            <div className='flex justify-end mt-6'>
+                                <button
+                                    className="px-6 py-3 bg-blue-500 text-white rounded" onClick={closeModal}
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div >
+                )}
+            </Modal >
         </div>
     );
 };
 
 const StatusUpdateModal = ({ onClose, requestId, handleStatusUpdate }) => {
     const [newStatus, setNewStatus] = useState('approved');
-
+    const [isYesNoOpen, setIsYesNoOpen] = useState(false);
     const handleSubmit = () => {
         handleStatusUpdate(newStatus);
     };
-
+    const handleYesNo = () => {
+        setIsYesNoOpen(true);
+    };
     return (
         <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-4 rounded-lg shadow-lg w-1/3">
@@ -310,7 +469,9 @@ const StatusUpdateModal = ({ onClose, requestId, handleStatusUpdate }) => {
                 </div>
                 <div className="flex justify-end">
                     <button
-                        onClick={handleSubmit}
+                        // onClick={handleSubmit}
+                        type='button'
+                        onClick={handleYesNo}
                         className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
                     >
                         Update
@@ -323,6 +484,33 @@ const StatusUpdateModal = ({ onClose, requestId, handleStatusUpdate }) => {
                     </button>
                 </div>
             </div>
+            {isYesNoOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                    <div className="bg-white rounded-lg p-8 max-w-md w-full">
+                        <h2 className="text-2xl font-bold text-black mb-4">Confilm to update</h2>
+                        <p>Change status of promotion request ?</p>
+
+                        <div className="flex justify-end">
+                            <button
+                                type="button"
+                                className="mr-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+                                onClick={handleSubmit}
+                            >
+                                Yes
+                            </button>
+                            <button
+                                type="button"
+                                className="mr-2 ml-0 px-4 py-2 bg-red-500 text-white rounded-md"
+                                onClick={() => setIsYesNoOpen(false)}
+                            >
+                                No
+                            </button>
+                        </div>
+
+
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

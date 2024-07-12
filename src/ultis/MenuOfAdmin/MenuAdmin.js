@@ -8,103 +8,108 @@ const { FaChartSimple,
     TbDeviceIpadCancel,
     RiAccountPinCircleFill,
     BiLogOut, FaChevronDown, IoMdArrowDropdown, IoMdArrowDropup, TbFileInvoice, CgUserList, LiaFileInvoiceDollarSolid, GrUserManager,
-    MdOutlineManageAccounts, GiStonePile, LiaGiftsSolid, VscGitPullRequestGoToChanges, GiGoldNuggets } = iconAdmin
+    MdOutlineManageAccounts, GiStonePile, LiaGiftsSolid, VscGitPullRequestGoToChanges, GiGoldNuggets, GrDocumentStore, MdOutlinePayments } = iconAdmin
 
 export const sidebarMenuAdmin = [
     // {
     //     path: 'revenue',
     //     text:'Revenue',
-    //     iconAdmin: <LiaMoneyBillWaveSolid size={24} color="white"/>
+    //     iconAdmin: <LiaMoneyBillWaveSolid size={24} color="#000055"/>
     // },
     {
         path: 'Dashboard',
         text: 'Dashboard',
-        iconAdmin: <FaChartSimple size={24} color="white" />
+        iconAdmin: <FaChartSimple size={24} color="#000055" />
     },
     {
-        path: 'Report',
+        // path: 'Report',
         text: 'Report',
-        iconAdmin: <TbReportSearch size={24} color="white" />,
-        iconAdmin2: <IoMdArrowDropdown size={24} color="white" />,
-        iconAdmin3: <IoMdArrowDropup size={24} color="white" />,
+        iconAdmin: <TbReportSearch size={24} color="#000055" />,
+        iconAdmin2: <IoMdArrowDropdown size={24} color="#000055" />,
+        iconAdmin3: <IoMdArrowDropup size={24} color="#000055" />,
         subMenu: [
             {
-                path: 'Report/Invoice',
+                path: 'Invoice',
                 text: 'Invoice',
-                iconAdmin: <TbFileInvoice size={24} color="white" />
+                iconAdmin: <TbFileInvoice size={24} color="#000055" />
             },
             {
-                path: 'Report/ProductSold',
-                text: 'Product sold',
-                iconAdmin: <LiaFileInvoiceDollarSolid size={24} color="white" />
+                path: 'Payment',
+                text: ' Payment',
+                iconAdmin: <MdOutlinePayments size={24} color="#000055" />
             },
             {
-                path: 'Report/Employee',
+                path: 'Employee',
                 text: 'Employee',
-                iconAdmin: <CgUserList size={24} color="white" />
+                iconAdmin: <CgUserList size={24} color="#000055" />
+            },
+            {
+                path: 'Stall',
+                text: 'Stall',
+                iconAdmin: <GrDocumentStore size={24} color="#000055" />
             }
 
         ],
 
     },
     {
-        path: 'Manage',
+        // path: 'Manage',
         text: 'Manage',
-        iconAdmin: <MdManageAccounts size={24} color="white" />,
-        iconAdmin2: <IoMdArrowDropdown size={24} color="white" />,
-        iconAdmin3: <IoMdArrowDropup size={24} color="white" />,
+        iconAdmin: <MdManageAccounts size={24} color="#000055" />,
+        iconAdmin2: <IoMdArrowDropdown size={24} color="#000055" />,
+        iconAdmin3: <IoMdArrowDropup size={24} color="#000055" />,
         subMenu: [
+            // {
+            //     path: 'productadmin',
+            //     text: 'Product',
+            //     iconAdmin: <GiStonePile size={24} color="#000055" />
+            // },
             {
-                path: 'Manage/productadmin',
-                text: 'Product',
-                iconAdmin: <GiStonePile size={24} color="white" />
-            },
-            {
-                path: 'Manage/customeradmin',
+                path: 'customeradmin',
                 text: 'Customer',
-                iconAdmin: <GrUserManager size={24} color="white" />
+                iconAdmin: <GrUserManager size={24} color="#000055" />
             },
+            // {
+            //     path: 'point',
+            //     text: 'Point of customer',
+            //     iconAdmin: <GiGoldNuggets size={24} color="#000055" />
+            // },
             {
-                path: 'Manage/point',
-                text: 'Point of customer',
-                iconAdmin: <GiGoldNuggets size={24} color="white" />
-            },
-            {
-                path: 'Manage/staff',
+                path: 'staff',
                 text: 'Staff',
-                iconAdmin: <MdOutlineManageAccounts size={24} color="white" />
+                iconAdmin: <MdOutlineManageAccounts size={24} color="#000055" />
             }
 
         ],
     },
     {
-        path: 'Promotionadmin',
+        // path: 'Promotionadmin',
         text: 'Promotion',
-        iconAdmin: <CiGift size={24} color="white" />,
-        iconAdmin2: <IoMdArrowDropdown size={24} color="white" />,
-        iconAdmin3: <IoMdArrowDropup size={24} color="white" />,
+        iconAdmin: <CiGift size={24} color="#000055" />,
+        iconAdmin2: <IoMdArrowDropdown size={24} color="#000055" />,
+        iconAdmin3: <IoMdArrowDropup size={24} color="#000055" />,
         subMenu: [
             {
-                path: 'Promotionadmin/promotionlist',
+                path: 'promotionlist',
                 text: 'Promotion list',
-                iconAdmin: <LiaGiftsSolid size={24} color="white" />
+                iconAdmin: <LiaGiftsSolid size={24} color="#000055" />
             },
             {
-                path: 'Promotionadmin/promotionrequest',
+                path: 'promotionrequest',
                 text: 'Request',
-                iconAdmin: <VscGitPullRequestGoToChanges size={24} color="white" />
+                iconAdmin: <VscGitPullRequestGoToChanges size={24} color="#000055" />
             }
         ],
     },
     {
         path: 'ReturnPolicy',
         text: 'Return policy',
-        iconAdmin: <MdOutlineAssignmentReturned size={24} color="white" />
+        iconAdmin: <MdOutlineAssignmentReturned size={24} color="#000055" />
     },
 
     // {
     //     path: '/login',
     //     text: 'Log out',
-    //     iconAdmin: <BiLogOut size={24} color="white" />
+    //     iconAdmin: <BiLogOut size={24} color="#000055" />
     // },
 ]

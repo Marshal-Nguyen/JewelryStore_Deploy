@@ -23,7 +23,25 @@ import { GiGoldNuggets } from "react-icons/gi";//point
 import { GiReceiveMoney, GiEmeraldNecklace, GiCrystalEarrings, GiDiamondRing, GiNecklaceDisplay } from "react-icons/gi";
 import { AiOutlineGold } from "react-icons/ai";
 import { LiaMoneyBillWaveSolid, LiaCircleNotchSolid } from "react-icons/lia";
+import { GrDocumentStore } from "react-icons/gr";
+import { IoDiamondOutline } from "react-icons/io5";
+import { PiDiamondsFourLight } from "react-icons/pi";
+import { MdWarehouse } from "react-icons/md";// kho
+import { MdOutlinePriceChange } from "react-icons/md";// material price
+import { FaMoneyBillTrendUp } from "react-icons/fa6";
+import { GiStoneBlock } from "react-icons/gi";
+import { TbBasketDiscount } from "react-icons/tb";// special discount request
+import { MdOutlinePayments } from "react-icons/md";// payment
 const IconManager = {
+    MdOutlinePayments,
+    TbBasketDiscount,
+    MdOutlinePriceChange,
+    GiStoneBlock,
+    FaMoneyBillTrendUp,
+    MdWarehouse,
+    PiDiamondsFourLight,
+    IoDiamondOutline,
+    GrDocumentStore,
     FaChartSimple,
     TbReportSearch,
     MdManageAccounts,

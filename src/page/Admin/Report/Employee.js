@@ -202,9 +202,9 @@ const Employee = () => {
     const years = Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i);
 
     return (
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center min-h-screen bg-white mx-5 pt-5 mb-5 rounded">
             <div>
-                <h1 className="text-2xl font-bold text-center mb-4">Staff revenue report</h1>
+                <h1 className="text-3xl font-bold text-center text-blue-800 mb-4">Staff revenue report</h1>
                 <div className="flex mb-4">
                     <div className="relative">
                         <input
@@ -243,29 +243,29 @@ const Employee = () => {
                     </select>
                 </div>
 
-                <div className="w-[1000px] overflow-hidden">
+                <div className="w-[1200px] overflow-hidden ">
                     <table className="font-inter w-full table-auto border-separate border-spacing-y-1 text-left">
-                        <thead className="w-full rounded-lg bg-[#222E3A]/[6%] text-base text-white sticky top-0">
-                            <tr>
-                                <th className="whitespace-nowrap rounded-l-lg py-3 pl-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa] ">ID</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa]">Name</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa]">Phone</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa]">Email</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa]">Status</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa]">Revenue</th>
+                        <thead className="w-full rounded-lg bg-sky-300 text-base font-semibold text-white sticky top-0">
+                            <tr className="whitespace-nowrap text-sm font-bold text-[#212B36] ">
+                                <th className="py-3 pl-3 rounded-l-lg">ID</th>
+                                <th >Name</th>
+                                <th >Phone</th>
+                                <th >Email</th>
+                                <th >Status</th>
+                                <th className=" rounded-r-lg ">Revenue</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             {mergedData.map((item, index) => (
                                 // hover:shadow-2xl
-                                <tr key={index} className="cursor-pointer bg-[#f6f8fa] drop-shadow-[0_0_10px_rgba(34,46,58,0.02)] hover:shadow-2xl" >
-                                    <td className="rounded-l-lg pl-3 text-base font-normal text-[#637381] py-4">{item.id}</td>
-                                    <td className="text-base font-normal text-[#637381] py-4">{item.firstname} {item.lastname}</td>
-                                    <td className="text-base font-normal text-[#637381] py-4">{item.phone}</td>
-                                    <td className="text-base font-normal text-[#637381] py-4">{item.email}</td>
-                                    <td className="text-base font-normal text-[#637381] py-4">{item.status}</td>
-
-                                    <td className="text-base font-normal text-[#637381] py-4">{formatCurrency(item.totalRevenue ? item.totalRevenue : 0)}</td>
+                                <tr key={index} className="cursor-pointer font-normal text-[#637381] bg-[#f6f8fa] drop-shadow-[0_0_10px_rgba(34,46,58,0.02)] text-base hover:shadow-2xl">
+                                    <td className="rounded-l-lg pl-3  py-4 text-black">{item.id}</td>
+                                    <td >{item.firstname} {item.lastname}</td>
+                                    <td >{item.phone}</td>
+                                    <td >{item.email}</td>
+                                    <td >{item.status}</td>
+                                    <td >{formatCurrency(item.totalRevenue ? item.totalRevenue : 0)}</td>
                                 </tr>
                             ))}
                             {placeholders.map((_, index) => (

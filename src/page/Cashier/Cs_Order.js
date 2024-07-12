@@ -16,8 +16,9 @@ const Cs_Order = () => {
     setIsOrderSubmenuOpen(!isOrderSubmenuOpen);
   };
   return (
-    <div className=''>
-      <div className='flex w-[200px] mb-2'>
+
+    <div className='w-full mt-2'>
+      <div className='flex w-[300px]'>
       {menuOrder.map((item) => (
         <NavLink
         to={item.path}

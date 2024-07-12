@@ -1,24 +1,19 @@
 import React from 'react'
-import Revenue from './Dashboard/Revenue'
-import TestChart from './Dashboard/CountOrder'
+import P1 from './Dashboard/P1'
+import P2 from './Dashboard/P2'
 import PieChartCategory from './Dashboard/ChartCategory'
-import TooltipChart from './Dashboard/TooltipChart'
+import P3 from './Dashboard/P3'
 export default function Dashboard() {
     return (
 
         <>
-            <div><Revenue /></div>
-            <div className="flex space-x-4">
-                <div className="flex-1">
-                    <TestChart />
-                </div>
-                <div className="flex-1">
-                    <PieChartCategory />
-                </div>
+            <div className=" bg-white"><P1 /></div>
+
+            <div className=" bg-white">
+                <P2 />
             </div>
 
-
-            <div><TooltipChart /></div>
+            <div className=" bg-white"><P3 /></div>
         </>
     )
 }

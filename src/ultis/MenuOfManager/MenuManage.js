@@ -1,131 +1,205 @@
 import IconManager from "./IconManager"
 
-const { FaChartSimple,
+const { GrDocumentStore,
+    FaChartSimple,
     TbReportSearch,
     MdManageAccounts,
     CiGift,
     MdOutlineAssignmentReturned,
     TbDeviceIpadCancel,
     RiAccountPinCircleFill,
-    BiLogOut, FaChevronDown, IoMdArrowDropdown, IoMdArrowDropup, TbFileInvoice, CgUserList, LiaFileInvoiceDollarSolid, GrUserManager,
-    MdOutlineManageAccounts, GiStonePile, LiaGiftsSolid, VscGitPullRequestGoToChanges, GiGoldNuggets, GiReceiveMoney, GiEmeraldNecklace, GiCrystalEarrings, GiDiamondRing, GiNecklaceDisplay, AiOutlineGold,
-    LiaMoneyBillWaveSolid, LiaCircleNotchSolid } = IconManager
+    BiLogOut,
+    FaChevronDown,
+    IoMdArrowDropdown,
+    IoMdArrowDropup,
+    TbFileInvoice,
+    CgUserList,
+    LiaFileInvoiceDollarSolid,
+    GrUserManager,
+    MdOutlineManageAccounts,
+    GiStonePile,
+    LiaGiftsSolid,
+    VscGitPullRequestGoToChanges,
+    GiGoldNuggets,
+    GiReceiveMoney, GiEmeraldNecklace, GiCrystalEarrings, GiDiamondRing, GiNecklaceDisplay, AiOutlineGold,
+    LiaMoneyBillWaveSolid, LiaCircleNotchSolid, IoDiamondOutline, PiDiamondsFourLight, MdWarehouse, MdOutlinePriceChange, FaMoneyBillTrendUp, TbBasketDiscount, GiStoneBlock, MdOutlinePayments } = IconManager
 
 export const sidebarMenuManager = [
-
     {
-        path: 'productManager',
-        text: 'Product',
-        iconAdmin: <GiStonePile size={24} color="white" />,
-        iconAdmin2: <IoMdArrowDropdown size={24} color="white" />,
-        iconAdmin3: <IoMdArrowDropup size={24} color="white" />,
+        path: 'Dashboard',
+        text: 'Dashboard',
+        iconAdmin: <FaChartSimple size={24} color="#000055" />
+    },
+    {
+        // path: 'materialPrice',
+
+        text: 'Material Price',
+        iconAdmin: <MdOutlinePriceChange size={24} color="#000055" />,
+        iconAdmin2: <IoMdArrowDropdown size={24} color="#000055" />,
+        iconAdmin3: <IoMdArrowDropup size={24} color="#000055" />,
         subMenu: [
             {
-                path: 'productManager/diamond',
-                text: 'Diamond',
-                icons: <GiDiamondRing size={24} color="white" />,
+                path: 'price',
+                text: 'Price',
+                iconAdmin: <FaMoneyBillTrendUp size={24} color="#000055" />,
             },
             {
-                path: 'productManager/jewelry',
-                text: 'Jewelry',
-                icons: <GiEmeraldNecklace size={24} color="white" />,
-            },
-            {
-                path: 'productManager/rgold',
-                text: 'Retail Gold',
-                icons: <GiCrystalEarrings size={24} color="white" />,
-            },
-            {
-                path: 'productManager/wholesalegold',
-                text: 'Wholesale Gold',
-                icons: <LiaCircleNotchSolid size={24} color="white" />,
+                path: 'material',
+                text: 'Material',
+                iconAdmin: <GiStoneBlock size={24} color="#000055" />,
             },
         ]
     },
     {
-        path: 'Dashboard',
-        text: 'Dashboard',
-        iconAdmin: <FaChartSimple size={24} color="white" />
+        // path: 'productManager',
+
+        text: 'Product',
+        iconAdmin: <GiStonePile size={24} color="#000055" />,
+        iconAdmin2: <IoMdArrowDropdown size={24} color="#000055" />,
+        iconAdmin3: <IoMdArrowDropup size={24} color="#000055" />,
+        subMenu: [
+            {
+                path: 'diamond',
+                text: 'Diamond',
+                iconAdmin: <IoDiamondOutline size={24} color="#000055" />,
+            },
+            {
+                path: 'jewelry',
+                text: 'Jewelry',
+                iconAdmin: <GiDiamondRing size={24} color="#000055" />,
+            },
+            {
+                path: 'rgold',
+                text: 'Retail Gold',
+                iconAdmin: <PiDiamondsFourLight size={24} color="#000055" />,
+            },
+            {
+                path: 'wholesalegold',
+                text: 'Wholesale Gold',
+                iconAdmin: <AiOutlineGold size={24} color="#000055" />,
+            },
+        ]
     },
     {
-        path: 'Report',
+        // path: 'warehouseManager',
+
+        text: 'Warehouse',
+        iconAdmin: <MdWarehouse size={24} color="#000055" />,
+        iconAdmin2: <IoMdArrowDropdown size={24} color="#000055" />,
+        iconAdmin3: <IoMdArrowDropup size={24} color="#000055" />,
+        subMenu: [
+            {
+                path: 'diamondWarehouse',
+                text: 'Diamond',
+                iconAdmin: <IoDiamondOutline size={24} color="#000055" />,
+            },
+            {
+                path: 'jewelryWarehouse',
+                text: 'Jewelry',
+                iconAdmin: <GiDiamondRing size={24} color="#000055" />,
+            },
+            {
+                path: 'rgoldWarehouse',
+                text: 'Retail Gold',
+                iconAdmin: <PiDiamondsFourLight size={24} color="#000055" />,
+            },
+            {
+                path: 'wholesalegoldWarehouse',
+                text: 'Wholesale Gold',
+                iconAdmin: <AiOutlineGold size={24} color="#000055" />,
+            },
+        ]
+    },
+
+    {
+        // path: 'Report',
         text: 'Report',
-        iconAdmin: <TbReportSearch size={24} color="white" />,
-        iconAdmin2: <IoMdArrowDropdown size={24} color="white" />,
-        iconAdmin3: <IoMdArrowDropup size={24} color="white" />,
+        iconAdmin: <TbReportSearch size={24} color="#000055" />,
+        iconAdmin2: <IoMdArrowDropdown size={24} color="#000055" />,
+        iconAdmin3: <IoMdArrowDropup size={24} color="#000055" />,
         subMenu: [
             {
-                path: 'Report/Invoice',
+                path: 'Invoice',
                 text: 'Invoice',
-                iconAdmin: <TbFileInvoice size={24} color="white" />
+                iconAdmin: <TbFileInvoice size={24} color="#000055" />
             },
             {
-                path: 'Report/ProductSold',
-                text: 'Product sold',
-                iconAdmin: <LiaFileInvoiceDollarSolid size={24} color="white" />
+                path: 'Payment',
+                text: ' Payment',
+                iconAdmin: <MdOutlinePayments size={24} color="#000055" />
             },
             {
-                path: 'Report/Employee',
+                path: 'Employee',
                 text: 'Employee',
-                iconAdmin: <CgUserList size={24} color="white" />
+                iconAdmin: <CgUserList size={24} color="#000055" />
+            },
+            {
+                path: 'Stall',
+                text: 'Stall',
+                iconAdmin: <GrDocumentStore size={24} color="#000055" />
             }
 
         ],
 
     },
     {
-        path: 'Manage',
+        // path: 'Manage',
         text: 'Manage',
-        iconAdmin: <MdManageAccounts size={24} color="white" />,
-        iconAdmin2: <IoMdArrowDropdown size={24} color="white" />,
-        iconAdmin3: <IoMdArrowDropup size={24} color="white" />,
+        iconAdmin: <MdManageAccounts size={24} color="#000055" />,
+        iconAdmin2: <IoMdArrowDropdown size={24} color="#000055" />,
+        iconAdmin3: <IoMdArrowDropup size={24} color="#000055" />,
         subMenu: [
+            // {
+            //     path: 'productMana',
+            //     text: 'Product',
+            //     iconAdmin: <GiStonePile size={24} color="#000055" />
+            // },
             {
-                path: 'Manage/productMana',
-                text: 'Product',
-                iconAdmin: <GiStonePile size={24} color="white" />
-            },
-            {
-                path: 'Manage/customerMana',
+                path: 'customerMana',
                 text: 'Customer',
-                iconAdmin: <GrUserManager size={24} color="white" />
+                iconAdmin: <GrUserManager size={24} color="#000055" />
             },
+            // {
+            //     path: 'point',
+            //     text: 'Point of customer',
+            //     iconAdmin: <GiGoldNuggets size={24} color="#000055" />
+            // },
             {
-                path: 'Manage/point',
-                text: 'Point of customer',
-                iconAdmin: <GiGoldNuggets size={24} color="white" />
-            },
-            {
-                path: 'Manage/staff',
+                path: 'staff',
                 text: 'Staff',
-                iconAdmin: <MdOutlineManageAccounts size={24} color="white" />
+                iconAdmin: <MdOutlineManageAccounts size={24} color="#000055" />
             }
 
         ],
     },
     {
-        path: 'Promotionmanager',
+        // path: 'Promotionmanager',
         text: 'Promotion',
-        iconAdmin: <CiGift size={24} color="white" />,
-        iconAdmin2: <IoMdArrowDropdown size={24} color="white" />,
-        iconAdmin3: <IoMdArrowDropup size={24} color="white" />,
+        iconAdmin: <CiGift size={24} color="#000055" />,
+        iconAdmin2: <IoMdArrowDropdown size={24} color="#000055" />,
+        iconAdmin3: <IoMdArrowDropup size={24} color="#000055" />,
         subMenu: [
             {
-                path: 'Promotionmanager/promotionlist',
+                path: 'promotionlist',
                 text: 'Promotion list',
-                iconAdmin: <LiaGiftsSolid size={24} color="white" />
+                iconAdmin: <LiaGiftsSolid size={24} color="#000055" />
             },
             {
-                path: 'Promotionmanager/promotionrequest',
+                path: 'promotionrequest',
                 text: 'History Request',
-                iconAdmin: <VscGitPullRequestGoToChanges size={24} color="white" />
+                iconAdmin: <VscGitPullRequestGoToChanges size={24} color="#000055" />
             }
         ],
+    },
+    {
+        path: 'specialDiscount',
+        text: 'Special Discount',
+        iconAdmin: <TbBasketDiscount size={24} color="#000055" />
     },
     {
         path: 'ReturnPolicy',
         text: 'Return policy',
-        iconAdmin: <MdOutlineAssignmentReturned size={24} color="white" />
+        iconAdmin: <MdOutlineAssignmentReturned size={24} color="#000055" />
     },
 
 ]

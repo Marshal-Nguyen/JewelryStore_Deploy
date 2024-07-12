@@ -1,28 +1,26 @@
 import icons from "../icon"
-
-const {GiReceiveMoney,BsCartPlus,BsCartCheck,BsCart3} = icons
+import { BsCashCoin } from "react-icons/bs";
+const {GiReceiveMoney,BsCartPlus,BsCartCheck,BsCart3,TbLogout2} = icons
 
 export const sidebarMenuCashier = [
     {
-        path: 'cs_order/cs_onprocess',
+        path: 'cs_order/cs_waitingPayment',
         text: 'Order',
         icons: <BsCart3  size={24} color="white" />,
-        subMenu: [
-            {
-                path: 'cs_order/cs_onprocess',
-                text: 'On Process',
-                icons: <BsCartPlus size={24} color="white"/>,
-            },
-            {
-                path: 'cs_order/cs_complete',
-                text: 'Completed',
-                icons: <BsCartCheck  size={24} color="white"/>,
-            },
-        ]
     },
     {
-        path: 'cs_revenue',
-        text: 'Revenue',
-        icons: <GiReceiveMoney size={24} color="white" />
+        path: 'cs_buyProduct/cs_onprocessBuy',
+        text: 'Buy Product',
+        icons: <BsCashCoin size={24} color="white" />
+    },
+    // {
+    //     path: 'cs_bill',
+    //     text: 'Bill For Invoice',
+    //     icons: <GiReceiveMoney size={24} color="white" />
+    // },
+    {
+        path: '/login',
+        text: 'Log out',
+        icons: <TbLogout2 size={24} color="white" />
     },
 ]

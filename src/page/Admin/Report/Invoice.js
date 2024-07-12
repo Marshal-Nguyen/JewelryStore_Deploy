@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { IoIosSearch } from "react-icons/io";
 import axios from "axios";
 import Modal from 'react-modal';
-
+import { CiViewList } from "react-icons/ci";
 const Invoice = () => {
     const [originalListProduct, setOriginalListProduct] = useState([]);
     const [listProduct, setListProduct] = useState([]);
@@ -122,9 +122,9 @@ const Invoice = () => {
     const placeholders = Array.from({ length: ProductsPerPage - currentProducts.length });
 
     return (
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center min-h-screen bg-white mx-5 pt-5 mb-5 rounded">
             <div>
-                <h1 className="text-2xl font-bold text-center mb-4">List of order</h1>
+                <h1 className="text-3xl font-bold text-center text-blue-800 mb-4">List of order</h1>
                 <div className="flex mb-4">
                     <div className="relative">
                         <input
@@ -137,47 +137,43 @@ const Invoice = () => {
                         <IoIosSearch className="absolute top-0 right-0 mr-3 mt-3 cursor-pointer text-gray-500" onClick={handleSearch} />
                     </div>
                 </div>
-                <div className="w-[1000px] overflow-hidden">
+                <div className="w-[1200px] overflow-hidden ">
                     <table className="font-inter w-full table-auto border-separate border-spacing-y-1 text-left">
-                        <thead className="w-full rounded-lg bg-[#222E3A]/[6%] text-base font-semibold text-white sticky top-0">
-                            <tr>
+                        <thead className="w-full rounded-lg bg-sky-300 text-base font-semibold text-white sticky top-0">
+                            <tr className="whitespace-nowrap text-xl font-bold text-[#212B36] ">
+                                <th className="py-3 pl-3 rounded-l-lg">ID</th>
+                                <th >Customer</th>
+                                <th >Staff</th>
+                                <th >Time</th>
 
-                                <th className="whitespace-nowrap rounded-l-lg py-3 pl-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa]">ID</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa]">Customer</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa]">Staff</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa]">Time</th>
-
-                                <th className="whitespace-nowrap py-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa]">Description</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa]">Total</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa]">Status</th>
-                                <th className="whitespace-nowrap py-3 text-sm font-bold text-[#212B36] bg-[#f6f8fa] text-center">Action</th>
+                                <th >Description</th>
+                                <th >Total</th>
+                                <th >Status</th>
+                                <th className=" rounded-r-lg ">Action</th>
                             </tr>
                         </thead>
 
                         <tbody >
                             {currentProducts.map((item, index) => (
 
-                                <tr key={index} className="cursor-pointer bg-[#f6f8fa] drop-shadow-[0_0_10px_rgba(34,46,58,0.02)] hover:shadow-2xl">
-                                    <td className="rounded-l-lg pl-3 text-sm font-normal text-[#637381]">{item.id}</td>
-                                    <td className="text-sm font-normal text-[#637381]">{item.customer.firstname} {item.customer.lastname}</td>
-                                    <td className="text-sm font-normal text-[#637381]">{item.staff.firstname} {item.staff.lastname}</td>
-                                    <td className="text-sm font-normal text-[#637381]">{formatDateTime(item.createDate)}</td>
-                                    <td className="text-sm font-normal text-[#637381]">{item.description}</td>
-                                    <td className="text-sm font-normal text-[#637381]">{formatCurrency(item.totalAmount)}</td>
-                                    <td className="text-sm font-normal text-[#637381]">{item.status}</td>
+                                <tr key={index} className="cursor-pointer font-normal text-[#637381] bg-[#f6f8fa] drop-shadow-[0_0_10px_rgba(34,46,58,0.02)] text-base hover:shadow-2xl">
+                                    <td className="rounded-l-lg pl-3  py-4 text-black">{item.id}</td>
+                                    <td >{item.customer.firstname} {item.customer.lastname}</td>
+                                    <td >{item.staff.firstname} {item.staff.lastname}</td>
+                                    <td >{formatDateTime(item.createDate)}</td>
+                                    <td >{item.description}</td>
+                                    <td className=''>{formatCurrency(item.totalAmount)}</td>
+                                    <td >{item.status}</td>
 
-                                    <button
-                                        className="my-2 border border-white bg-[#4741b1d7] text-white rounded-md transition duration-200 ease-in-out hover:bg-[#1d3279] active:bg-[#4741b174] focus:outline-none"
-                                        onClick={() => handleDetailClick(item.id)}
-                                    >
-                                        Detail
-                                    </button>
+                                    <td className="text-3xl text-[#000099] pl-2"><CiViewList onClick={() => handleDetailClick(item.id)} /></td>
+
 
                                 </tr>
                             ))}
                             {placeholders.map((_, index) => (
                                 <tr key={`placeholder-${index}`} className="cursor-pointer bg-[#f6f8fa] drop-shadow-[0_0_10px_rgba(34,46,58,0.02)]">
                                     <td className="rounded-l-lg pl-3 text-sm font-normal text-[#637381] py-4">-</td>
+                                    <td className="text-sm font-normal text-[#637381] py-4">-</td>
                                     <td className="text-sm font-normal text-[#637381] py-4">-</td>
                                     <td className="text-sm font-normal text-[#637381] py-4">-</td>
                                     <td className="text-sm font-normal text-[#637381] py-4">-</td>
@@ -209,20 +205,22 @@ const Invoice = () => {
                     onRequestClose={closeModal}
                     contentLabel="Staff Details"
                     className="bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto"
-                    overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+                    overlayClassName="fixed inset-0 z-30 bg-black bg-opacity-50 flex justify-center items-center"
                 >
                     {selectedOrder && (
                         <div className="fixed inset-0 flex items-center justify-center z-10 bg-gray-800 bg-opacity-50">
+
                             <div className="bg-white rounded-lg p-8 max-w-3xl w-full">
+                                <div className="text-2xl text-center font-semibold mb-4">Order detail list</div>
                                 <table className="w-full font-inter table-auto border-separate border-spacing-y-2 text-left">
-                                    <thead className="bg-[#222E3A]/[6%] text-lg font-semibold text-white sticky top-0 rounded-lg">
+                                    <thead className="bg-sky-300  text-lg font-semibold text-white sticky top-0 rounded-lg">
                                         <tr>
-                                            <th className="py-4 pl-4 text-lg font-bold text-[#212B36] bg-[#f6f8fa] rounded-l-lg whitespace-nowrap">ID</th>
-                                            <th className="py-4 text-lg font-bold text-[#212B36] bg-[#f6f8fa] whitespace-nowrap">Product ID</th>
-                                            <th className="py-4 text-lg font-bold text-[#212B36] bg-[#f6f8fa] whitespace-nowrap">Quantity</th>
-                                            <th className="py-4 text-lg font-bold text-[#212B36] bg-[#f6f8fa] whitespace-nowrap">Promotion ID</th>
-                                            <th className="py-4 text-lg font-bold text-[#212B36] bg-[#f6f8fa] whitespace-nowrap">Unit Price</th>
-                                            <th className="py-4 text-lg font-bold text-[#212B36] bg-[#f6f8fa] text-center whitespace-nowrap">Status</th>
+                                            <th className="py-4 pl-4 text-lg font-bold bg-sky-300 text-[#212B36]  rounded-l-lg whitespace-nowrap">ID</th>
+                                            <th className="py-4 text-lg font-bold bg-sky-300 text-[#212B36]  whitespace-nowrap">Product ID</th>
+                                            <th className="py-4 text-lg font-bold bg-sky-300 text-[#212B36]  whitespace-nowrap">Quantity</th>
+                                            <th className="py-4 text-lg font-bold bg-sky-300 text-[#212B36]  whitespace-nowrap">Promotion ID</th>
+                                            <th className="py-4 text-lg font-bold bg-sky-300 text-[#212B36]  whitespace-nowrap">Unit Price</th>
+                                            <th className="py-4 text-lg font-bold bg-sky-300 text-[#212B36]  text-center whitespace-nowrap">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
