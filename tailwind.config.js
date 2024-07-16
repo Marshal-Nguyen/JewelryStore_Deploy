@@ -5,7 +5,13 @@ module.exports = {
 "./public/index.html"
 ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'dancing': ['"Dancing Script"', 'cursive'],
+        'edutas': ['"Edu TAS Beginner"', 'sans-serif'],
+        'noto-serif-ethiopic': ['"Noto Serif Ethiopic"', 'serif'],
+      },
+    },
   },
   plugins: [],
 }

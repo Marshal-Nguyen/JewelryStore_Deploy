@@ -562,7 +562,7 @@ const SidebarRight = () => {
 
 
     <div className='flex justify-center '>
-      <div className='shadow-md shadow-gray-600 pt-[10px] rounded-2xl w-[90%] h-[34em] bg-[#f3f1ed] mt-[20px]'>
+      <div className='shadow-md shadow-gray-600 pt-[10px] rounded-2xl w-[90%] h-[34em] bg-[#ffffff] mt-[20px]'>
         <div className='flex justify-end'>
           <div className='flex justify-end px-[15px] text-black font-thin'>{currentTime}</div>
         </div>

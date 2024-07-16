@@ -73,7 +73,14 @@ export const productSlice = createSlice({
             }
         },
         deleteProduct: (state, action) => {
-            state.CartArr = state.CartArr.filter(item => item.id !== action.payload.id);
+            const productIndex = state.CartArr.findIndex(p => p.id === action.payload.id);
+            if (productIndex !== -1) {
+                if (state.CartArr[productIndex].quantity > 1) {
+                    state.CartArr[productIndex].quantity -= 1;
+                } else {
+                    state.CartArr = state.CartArr.filter(item => item.id !== action.payload.id);
+                }
+            }
         },
         //Add customer
         addCustomer: (state, action) => {

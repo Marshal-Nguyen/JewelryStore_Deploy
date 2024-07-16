@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { fetchAllRing} from '../../apis/jewelryService'
+import { fetchAllRing } from '../../apis/jewelryService'
 import ring from '../../assets/img/seller/ring.png'
 import { useDispatch } from 'react-redux'
 import { addProduct } from '../../store/slice/cardSilec'
@@ -41,7 +41,7 @@ const Ring = () => {
     } catch (error) {
       console.error('Error fetching rings:', error);
       toast.error('Failed to fetch rings');
-    } 
+    }
   };
   const closeModal = () => {
     setIsModalOpen(false);
@@ -58,17 +58,17 @@ const Ring = () => {
           Authorization: `Bearer ${token}`
         }
       });
-      console.log('ressssss',res)
+      console.log('ressssss', res)
       if (res && res.data && res.data.data) {
         const details = res.data.data[0];
-        console.log('detail',details)
+        console.log('detail', details)
         setselectedJewelry(details);
         const resDiamond = await axios.get(`https://jssatsproject.azurewebsites.net/api/diamond/getbycode?code=${details.diamondCode}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-        console.log('resDiamond',resDiamond)
+        console.log('resDiamond', resDiamond)
         setselectedDiamond(resDiamond.data.data[0]);
         setIsModalOpen(true)
       }
@@ -114,7 +114,7 @@ const Ring = () => {
   };
   const handleCheckItem = (item) => {
     dispatch(addProduct(item))
-    console.log('===>item',item)
+    console.log('===>item', item)
   }
 
   return (<>
@@ -151,37 +151,37 @@ const Ring = () => {
       </form>
       <div className='h-[79vh] overflow-y-auto mt-3 flex-col justify-center mx-auto'>
         <div className='grid grid-cols-4 mt-1 w-fit space-x-2 mx-auto'>
-        {listRing && listRing.length > 0 &&
-    listRing.map((item, index) => {
-      return (
-        <div key={`ring-${index}`} class="relative flex flex-col justify-center items-center w-[200px] px-[20px] pb-8 h-[280px] bg-[#fff] shadow-xl rounded-lg mb-2">
-          <div className='bg-[#fff] rounded-md shadow-md'>
-            <img class="mt-0 w-28 h-28 rounded-lg hover:-translate-y-30 duration-700 hover:scale-125" src={item.img} />
-          </div>
-          <div class="max-w-sm h-auto">
-            <div class="absolute top-[10px] w-full left-0 p-1 sm:justify-between">
-              <h2 class="text-black text-sm font-normal tracking-widest text-center">{item.name}</h2>
-            </div>
-            <div className='absolute bottom-[50px] right-0 w-full'>
-              <p class="text-sm text-[#de993f] flex justify-center">Code: {item.code}</p>
-              <div class="flex gap-3 items-center justify-center">
-                <p class="text-[#cc4040] font-bold text-sm">{formatCurrency(item.productValue - (item.productValue * item.discountRate))}</p>
-                <p class="text-[#121212] font-semibold text-sm line-through">{formatCurrency(item.productValue)}</p>
-              </div>
-            </div>
-            <div class="absolute bottom-[-10px] right-0 w-full flex justify-around items-center">
-              <button onClick={() => handleDetailClick(item.code)} class="px-3 bg-[#3b9c7f] p-1 rounded-md text-white font-semibold shadow-md shadow-[#87A89E] hover:ring-2 ring-blue-400 hover:scale-75 duration-500">Details</button>
-              {item.status !== 'inactive' && (
-                <button onClick={() => handleCheckItem(item)} class="px-2 border-2 border-white p-1 rounded-md text-white font-semibold shadow-lg shadow-white hover:scale-75 duration-500">Add to Cart</button>
-              )}
-                {item.status == 'inactive' && (
-                <button class="px-2 border-2 bg-[#ff2929] border-white p-1 rounded-md text-white font-semibold shadow-lg shadow-white">Sold out</button>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    })}
+          {listRing && listRing.length > 0 &&
+            listRing.map((item, index) => {
+              return (
+                <div key={`ring-${index}`} class="relative flex flex-col justify-center items-center w-[200px] px-[20px] pb-8 h-[280px] bg-[#fff] shadow-xl rounded-lg mb-2">
+                  <div className='bg-[#fff] rounded-lg shadow-[#918888] shadow-md'>
+                    <img class="mt-2 w-24 h-24 rounded-lg hover:-translate-y-30 duration-700 hover:scale-125" src={item.img} />
+                  </div>
+                  <div class="max-w-sm h-auto">
+                    <div class="absolute top-[10px] w-full left-0 p-1 sm:justify-between">
+                      <h2 class="text-black text-sm font-normal tracking-widest text-center">{item.name}</h2>
+                    </div>
+                    <div className='absolute bottom-[50px] right-0 w-full'>
+                      <p class="text-sm text-[#de993f] flex justify-center">Code: {item.code}</p>
+                      <div class="flex gap-3 items-center justify-center">
+                        <p class="text-[#cc4040] font-bold text-sm">{formatCurrency(item.productValue - (item.productValue * item.discountRate))}</p>
+                        <p class="text-[#121212] font-semibold text-sm line-through">{formatCurrency(item.productValue)}</p>
+                      </div>
+                    </div>
+                    <div class="absolute bottom-[5px] right-0 w-full flex justify-around items-center">
+                      <button onClick={() => handleDetailClick(item.code)} class="px-3 bg-[#3b9c7f] p-1 rounded-md text-white font-semibold shadow-md shadow-[#87A89E] hover:ring-2 ring-blue-400 hover:scale-75 duration-500">Details</button>
+                      {item.status !== 'inactive' && (
+                        <button onClick={() => dispatch(addProduct(item))} class="px-2 border-2 bg-[#241c82] border-white p-1 rounded-md text-white font-semibold shadow-lg shadow-white hover:scale-75 duration-500">Add to Cart</button>
+                      )}
+                      {item.status == 'inactive' && (
+                        <button class="px-2 border-2 bg-[#ff2929] border-white p-1 rounded-md text-white font-semibold shadow-lg shadow-white">Sold out</button>
+                      )}         
+                       </div>
+                  </div>
+                </div>
+              );
+            })}
 
         </div>
 
@@ -189,163 +189,106 @@ const Ring = () => {
           isOpen={isModalOpen}
           onRequestClose={closeModal}
           contentLabel="Staff Details"
-          className="bg-white rounded-md shadow-lg max-w-md mx-auto"
+          className="bg-white rounded-md shadow-lg max-w-md mx-auto p-6"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
         >
           {selectedJewelry && (
-
-            <div className="">
-              <div className="flex items-center py-2 mb-2 justify-between border-b rounded-t">
-                <h3 className="text-md ml-6 font-semibold text-gray-900">
-                  {selectedJewelry.name}
+            <div>
+              <div className="flex items-center py-2 mb-4 justify-between border-b-2 border-gray-300">
+                <h3 className="text-md font-semibold text-gray-900">
+                  {selectedJewelry.name} - {selectedJewelry.stalls.name}
                 </h3>
-                <a className='cursor-pointer text-black text-[24px] py-0' onClick={closeModal} >&times;</a>
+                <a className='cursor-pointer text-black text-2xl py-0' onClick={closeModal}>&times;</a>
               </div>
-              <div class="relative overflow-x-auto shadow-md ">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                  <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700">
+              <div className="overflow-x-auto shadow-md">
+                <table className="w-full text-sm text-left text-gray-500">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr className='hidden'>
-                      <th scope="col" class="px-6 py-2">
-                        Information
-                      </th>
-                      <th scope="col" class="px-6 py-2">
-                        Details
-                      </th>
+                      <th scope="col" className="px-6 py-3">Information</th>
+                      <th scope="col" className="px-6 py-3">Details</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                      <td scope="row" class=" px-6 py-2 font-medium whitespace-nowrap dark:text-white">
-                        Material Name
-                      </td>
-                      <td class="px-6 py-2">
-                        {selectedJewelry.materialName}
-                      </td>
+                    <tr className="bg-white border-b">
+                      <td scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">Material Name</td>
+                      <td className="px-6 py-2">{selectedJewelry.materialName}</td>
                     </tr>
-                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                      <td scope="row" class="px-6 py-2 font-medium whitespace-nowrap dark:text-white">
-                        Material Weight
-                      </td>
-                      <td class="px-6 py-2">
-                        {selectedJewelry.materialWeight}
-                      </td>
+                    <tr className="bg-gray-50 border-b">
+                      <td scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">Material Weight</td>
+                      <td className="px-6 py-2">{selectedJewelry.materialWeight}</td>
                     </tr>
-                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                      <td scope="row" class="px-6 py-2 font-medium whitespace-nowrap dark:text-white">
-                        DiamondCode
-                      </td>
-                      <td class="px-6 py-2 flex items-center gap-4">
-                        {selectedJewelry.diamondCode}
-                      </td>
+                    <tr className="bg-white border-b">
+                      <td scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">Diamond Code</td>
+                      <td className="px-6 py-2 flex items-center gap-4">{selectedJewelry.diamondCode}</td>
                     </tr>
-
-                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                      <td scope="row" class="px-6 py-2 font-medium whitespace-nowrap dark:text-white">
-                        Diamond Name
-                      </td>
-                      <td class="px-6 py-2">
-                        {selectedJewelry.diamondName}
-                      </td>
+                    <tr className="bg-gray-50 border-b">
+                      <td scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">Diamond Name</td>
+                      <td className="px-6 py-2">{selectedJewelry.diamondName}</td>
                     </tr>
-                    {selectedDiamond && (<>
-                      <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <td scope="row" class="px-6 py-2 font-medium whitespace-nowrap dark:text-white">
-                          Shape:
-                        </td>
-                        <td class="px-6 py-2">
-                          {selectedDiamond.shapeName}
-                        </td>
-                      </tr>
-                      <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <td scope="row" class="px-6 py-2 font-medium whitespace-nowrap dark:text-white">
-                          Origin:
-                        </td>
-                        <td class="px-6 py-2">
-                          {capitalizeFirstLetter(selectedDiamond.originName)}
-                        </td>
-                      </tr>
-                      <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <td scope="row" class="px-6 py-2 font-medium whitespace-nowrap dark:text-white">
-                          Fluorescence:
-                        </td>
-                        <td class="px-6 py-2">
-                          {capitalizeFirstLetter(selectedDiamond.fluorescenceName)}
-                        </td>
-                      </tr>
-                      <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <td scope="row" class="px-6 py-2 font-medium whitespace-nowrap dark:text-white">
-                          Color:
-                        </td>
-                        <td class="px-6 py-2">
-                          {capitalizeFirstLetter(selectedDiamond.colorName)}
-                        </td>
-                      </tr>
-                      <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <td scope="row" class="px-6 py-2 font-medium whitespace-nowrap dark:text-white">
-                          Symmetry:
-                        </td>
-                        <td class="px-6 py-2">
-                          {capitalizeFirstLetter(selectedDiamond.symmetryName)}
-                        </td>
-                      </tr>
-                      <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <td scope="row" class="px-6 py-2 font-medium whitespace-nowrap dark:text-white">
-                          Polish:
-                        </td>
-                        <td class="px-6 py-2">
-                          {capitalizeFirstLetter(selectedDiamond.polishName)}
-                        </td>
-                      </tr>
-                      <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <td scope="row" class="px-6 py-2 font-medium whitespace-nowrap dark:text-white">
-                          Cut:
-                        </td>
-                        <td class="px-6 py-2">
-                          {capitalizeFirstLetter(selectedDiamond.cutName)}
-                        </td>
-                      </tr>
-                      <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <td scope="row" class="px-6 py-2 font-medium whitespace-nowrap dark:text-white">
-                          Clarity:
-                        </td>
-                        <td class="px-6 py-2">
-                          {selectedDiamond.clarityName}
-                        </td>
-                      </tr>
-                      <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <td scope="row" class="px-6 py-2 font-medium whitespace-nowrap dark:text-white">
-                          Carat:
-                        </td>
-                        <td class="px-6 py-2">
-                          {selectedDiamond.caratWeight}
-                        </td>
-                      </tr>
-                    </>)
-                    }
+                    {selectedDiamond && (
+                      <>
+                        <tr className="bg-white border-b">
+                          <td scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">Shape</td>
+                          <td className="px-6 py-2">{selectedDiamond.shapeName}</td>
+                        </tr>
+                        <tr className="bg-gray-50 border-b">
+                          <td scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">Origin</td>
+                          <td className="px-6 py-2">{capitalizeFirstLetter(selectedDiamond.originName)}</td>
+                        </tr>
+                        <tr className="bg-white border-b">
+                          <td scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">Fluorescence</td>
+                          <td className="px-6 py-2">{capitalizeFirstLetter(selectedDiamond.fluorescenceName)}</td>
+                        </tr>
+                        <tr className="bg-gray-50 border-b">
+                          <td scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">Color</td>
+                          <td className="px-6 py-2">{capitalizeFirstLetter(selectedDiamond.colorName)}</td>
+                        </tr>
+                        <tr className="bg-white border-b">
+                          <td scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">Symmetry</td>
+                          <td className="px-6 py-2">{capitalizeFirstLetter(selectedDiamond.symmetryName)}</td>
+                        </tr>
+                        <tr className="bg-gray-50 border-b">
+                          <td scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">Polish</td>
+                          <td className="px-6 py-2">{capitalizeFirstLetter(selectedDiamond.polishName)}</td>
+                        </tr>
+                        <tr className="bg-white border-b">
+                          <td scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">Cut</td>
+                          <td className="px-6 py-2">{capitalizeFirstLetter(selectedDiamond.cutName)}</td>
+                        </tr>
+                        <tr className="bg-gray-50 border-b">
+                          <td scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">Clarity</td>
+                          <td className="px-6 py-2">{selectedDiamond.clarityName}</td>
+                        </tr>
+                        <tr className="bg-white border-b">
+                          <td scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">Carat</td>
+                          <td className="px-6 py-2">{selectedDiamond.caratWeight}</td>
+                        </tr>
+                      </>
+                    )}
                   </tbody>
                 </table>
               </div>
             </div>
-
           )}
         </Modal>
+
       </div>
       <ReactPaginate
-         onPageChange={handlePageClick}
-         pageRangeDisplayed={3}
-         marginPagesDisplayed={2}
-         pageCount={totalPage}
-         pageClassName="mx-1"
-         pageLinkClassName="px-3 py-2 rounded hover:bg-gray-200 text-black"
-         previousClassName="mx-1"
-         previousLinkClassName="px-3 py-2 rounded hover:bg-gray-200"
-         nextClassName="mx-1"
-         nextLinkClassName="px-3 py-2 rounded hover:bg-gray-200"
-         breakLabel="..."
-         breakClassName="mx-1 "
-         breakLinkClassName="px-3 py-2 text-black rounded hover:bg-gray-200"
-         containerClassName="flex justify-center items-center space-x-4 h-[36px]"
-         activeClassName="bg-blue-500 text-white rounded-xl"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={3}
+        marginPagesDisplayed={2}
+        pageCount={totalPage}
+        pageClassName="mx-1"
+        pageLinkClassName="px-3 py-2 rounded hover:bg-gray-200 text-black"
+        previousClassName="mx-1"
+        previousLinkClassName="px-3 py-2 rounded hover:bg-gray-200"
+        nextClassName="mx-1"
+        nextLinkClassName="px-3 py-2 rounded hover:bg-gray-200"
+        breakLabel="..."
+        breakClassName="mx-1 "
+        breakLinkClassName="px-3 py-2 text-black rounded hover:bg-gray-200"
+        containerClassName="flex justify-center items-center space-x-4 h-[36px]"
+        activeClassName="bg-blue-500 text-white rounded-xl"
         renderOnZeroPageCount={null}
         // className="bg-black flex justify-center items-center"
         previousLabel={

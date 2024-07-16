@@ -1,84 +1,87 @@
 import icons from "./icon"
 
-const { GiNecklaceDisplay, GiDiamondRing, LiaCircleNotchSolid, LiaMoneyBillWaveSolid, SlPeople, GiEmeraldNecklace, GiStonePile, AiOutlineGold, SlDiamond, LiaFileInvoiceDollarSolid, CiGift, TbArrowsExchange2, TbLogout2, MdDiamond, GiCrystalEarrings } = icons
+const { GiNecklaceDisplay, GiDiamondRing, LiaCircleNotchSolid, LiaMoneyBillWaveSolid, IoPeopleSharp , GiEmeraldNecklace, GiStonePile, AiFillGolden , RiVipDiamondFill, FaFileInvoice, CiGift, TbArrowsExchange2, TbLogout2, MdDiamond, GiCrystalEarrings } = icons
 
 export const sidebarMenu = [
     // {
     //     path: 'revenue',
     //     text:'Revenue',
-    //     icons: <LiaMoneyBillWaveSolid size={24} color="white"/>
+    //     icons: <LiaMoneyBillWaveSolid classname='bg-[#3c26cc] p-[6PX] rounded-lg' size={30} color="white"/>
     // },
     {
         path: 'customer',
         text: 'Customer',
-        icons: <SlPeople size={24} color="white" />
+        icons: <IoPeopleSharp  className='bg-[#3c26cc] p-[6px] rounded-lg' size={30} color="white" />
     },
     {
         path: 'jewelry/ring',
         text: 'Jewelry',
-        icons: <GiNecklaceDisplay size={24} color="white" />,
+        icons: <GiNecklaceDisplay className='bg-[#3c26cc] p-[6PX] rounded-lg' size={30} color="white" />,
         subMenu: [
             {
                 path: 'jewelry/ring',
                 text: 'Ring',
-                icons: <GiDiamondRing size={24} color="white" />,
+                icons: <GiDiamondRing  size={20} color="white" />,
             },
             {
                 path: 'jewelry/necklace',
                 text: 'Necklace',
-                icons: <GiEmeraldNecklace size={24} color="white" />,
+                icons: <GiEmeraldNecklace  size={20} color="white" />,
             },
             {
                 path: 'jewelry/earring',
                 text: 'Earring',
-                icons: <GiCrystalEarrings size={24} color="white" />,
+                icons: <GiCrystalEarrings size={20} color="white" />,
             },
             {
                 path: 'jewelry/bangles',
                 text: 'Bangles',
-                icons: <LiaCircleNotchSolid size={24} color="white" />,
+                icons: <LiaCircleNotchSolid  size={20} color="white" />,
             },
         ]
     },
     {
         path: 'wholesaleGold',
         text: 'Wholesale Gold',
-        icons: <GiStonePile size={24} color="white" />
+        icons: <GiStonePile className='bg-[#3c26cc] p-[6PX] rounded-lg' size={30} color="white" />
     },
     {
         path: 'retailGold',
         text: 'Retail Gold',
-        icons: <AiOutlineGold size={24} color="white" />
+        icons: <AiFillGolden  className='bg-[#3c26cc] p-[6PX] rounded-lg' size={30} color="white" />
     },
     {
         path: '',
         text: 'Diamond',
         end: true,
-        icons: <MdDiamond size={24} color="white" />
+        icons: <RiVipDiamondFill className='bg-[#3c26cc] p-[6PX] rounded-lg' size={30} color="white" />
     },
     {
         path: 'searchInvoice/onprocessSeller',
         text: 'Invoice',
-        icons: <LiaFileInvoiceDollarSolid size={24} color="white" />
+        icons: <FaFileInvoice className='bg-[#3c26cc] p-[6PX] rounded-lg' size={30} color="white" />
     },
-    // {
-    //     path: 'promotion',
-    //     text: 'Promotion',
-    //     icons: <CiGift size={24} color="white" />
-    // },
+ 
     {
 
         path: 'purchase/buyIn',
         text:'Purchase',
-        icons: <TbArrowsExchange2 size={24} color="white"/>,
+        icons: <TbArrowsExchange2 className='bg-[#3c26cc] p-[6PX] rounded-lg' size={30} color="white"/>,
       
 
     },
-   
+    {
+
+        path: 'screengold',
+        text:'Screen Gold',
+        icons: <TbArrowsExchange2 className='bg-[#3c26cc] p-[6PX] rounded-lg' size={30} color="white"/>,
+      
+
+    },
     {
         path: '/login',
         text: 'Log out',
-        icons: <TbLogout2 size={24} color="white" />
+        icons: <TbLogout2 className='bg-[#3c26cc] p-[6PX] rounded-lg' size={30} color="white" />
     },
 
 ]

@@ -10,6 +10,9 @@ import ReactPaginate from 'react-paginate';
 import { AiFillLeftCircle, AiFillRightCircle } from 'react-icons/ai';
 import { IconContext } from 'react-icons';
 import { fetchAllCustomer } from '../../apis/jewelryService';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import Modal from 'react-modal';
 
 const Customer = () => {
   const dispatch = useDispatch();
@@ -17,6 +20,16 @@ const Customer = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [totalProduct, setTotalProduct] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
 
   const handlePageClick = (event) => {
     getCustomer(event.selected + 1);
@@ -39,7 +52,7 @@ const Customer = () => {
     }
   };
 
- 
+
 
   const handleSearch = (event) => {
     const searchTerm = event.target.value.trim();
@@ -76,14 +89,41 @@ const Customer = () => {
   const [address, setAddress] = useState('');
 
   const handleSubmitOrder = async (event) => {
-    event.preventDefault();
+    // event.preventDefault();
+
+    // Validation logic
+    if (!firstname) {
+      toast.error('First name is required');
+      return;
+    }
+    if (!lastname) {
+      toast.error('Last name is required');
+      return;
+    }
+    if (!phone) {
+      toast.error('Phone number is required');
+      return;
+    }
+    if (!email) {
+      toast.error('Email is required');
+      return;
+    }
+    if (!address) {
+      toast.error('Address is required');
+      return;
+    }
+    if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+      toast.error('Invalid email format');
+      return;
+    }
+
     let data = {
-      firstname: firstname,
-      lastname: lastname,
-      phone: phone,
-      email: email,
-      gender: gender,
-      address: address,
+      firstname,
+      lastname,
+      phone,
+      email,
+      gender,
+      address,
     };
 
     try {
@@ -95,11 +135,8 @@ const Customer = () => {
         setLastname('');
         setPhone('');
         setEmail('');
-        setGender('');
         setAddress('');
-
-        // Cập nhật danh sách khách hàng ngay lập tức
-        setListCustomer((prevList) => [res.data.data, ...prevList]);
+        getCustomer(1);
       } else {
         toast.error('Add Fail');
         console.error('Unexpected response:', res);
@@ -121,8 +158,51 @@ const Customer = () => {
   };
   const handleCheckItem = (item) => {
     dispatch(addCustomer(item))
-    console.log('===>customer',item)
+    console.log('===>customer', item)
   }
+  const handleShowAddCus = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='fixed flex items-center justify-center top-0 bottom-0 left-0 right-0 bg-[#6f85ab61] overflow-y-auto'>
+            <div className="bg-[#fff] mx-auto rounded-md w-[23%] shadow-[#b6b0b0] shadow-md p-4">
+              <h1 className="text-lg font-semibold mb-4">Confirm to add</h1>
+              <p className="mb-6 text-center">Are you sure you want to add customer?</p>
+              <div className="flex justify-end">
+                <button
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setFirstname('');
+                    setLastname('');
+                    setPhone('');
+                    setEmail('');
+                    setAddress('');
+                    closeModal();
+                    onClose();
+                  }}
+                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded m-0"
+                >
+                  No
+                </button>
+                <button
+                  onClick={(event) => {
+                    event.preventDefault();
+                    handleSubmitOrder();
+                    closeModal();
+                    onClose();
+                  }}
+                  className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 m-0 ml-2 rounded"
+                >
+                  Yes
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      },
+    });
+  };
+
   return (
     <>
       <div className="h-[67px] mt-5 mb-2 w-full">
@@ -157,62 +237,66 @@ const Customer = () => {
           </div>
         </form>
 
-        <Popup trigger={<button type="button" className="m-0 ml-16 mb-2 flex justify-center items-center bg-[#00AC7C] text-white gap-1 cursor-pointer tracking-widest rounded-md hover:bg-[#00ac7b85] duration-300 hover:gap-2 hover:translate-x-3">
-          Add
+        <button
+          type="button"
+          className="m-0 p-2 ml-16 mb-2 flex justify-center items-center bg-[#00AC7C] text-white gap-1 cursor-pointer tracking-widest rounded-md hover:bg-[#00ac7b85] duration-300 hover:gap-2 hover:translate-x-3"
+          onClick={openModal}
+        >          Add
           <svg className="w-5 h-5" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
             <path d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" strokeLinejoin="round" strokeLinecap="round" ></path>
           </svg>
-        </button>} position="right center">
-          {close => (
-            <div className='fixed top-0 bottom-0 left-0 right-0 bg-[#6f85ab61] overflow-y-auto'>
-              <div className='bg-[#fff] my-[70px] mx-auto rounded-md w-[40%] shadow-[#b6b0b0] shadow-md'>
-                <div className="flex items-center justify-between p-2 md:p-5 border-b rounded-t dark:border-gray-600">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Create New Customer
-                  </h3>
-                  <a className='cursor-pointer text-black text-[24px] py-0' onClick={close}>&times;</a>
-                </div>
-                <form className="p-4 md:p-5">
-                  <div className="grid gap-4 mb-4 grid-cols-2">
-                    <div className="col-start-1">
-                      <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
-                      <input value={firstname} onChange={(event) => setFirstname(event.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="John" required />
-                    </div>
-                    <div className="col-start-2">
-                      <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
-                      <input value={lastname} onChange={(event) => setLastname(event.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Wick" required />
-                    </div>
-                    <div className="col-span-2 sm:col-span-1">
-                      <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
-                      <input value={phone} onChange={(event) => setPhone(event.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="0101010101" required />
-                    </div>
-                    <div className="col-span-2 sm:col-span-1">
-                      <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                      <input value={email} onChange={(event) => setEmail(event.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="jewelryStore@gmail.com" required />
-                    </div>
-                    <div className="col-span-2 sm:col-span-1">
-                      <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                      <input value={address} onChange={(event) => setAddress(event.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Jewelry Store" required />
-                    </div>
-                    <div className="col-span-2 sm:col-span-1">
-                      <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender</label>
-                      <select value={gender} onChange={(event) => setGender(event.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                      </select>
-                    </div>
-                  </div>
-                  <button onClick={handleSubmitOrder} type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                    Add new customer
-                  </button>
-                </form>
+        </button>
+        <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="Modal">
+          <div className='fixed top-0 bottom-0 left-0 right-0 bg-[#6f85ab61] overflow-y-auto'>
+            <div className='bg-[#fff] my-[70px] mx-auto rounded-md w-[40%] shadow-[#b6b0b0] shadow-md'>
+              <div className="flex items-center justify-between p-2 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Create New Customer
+                </h3>
+                <a className='cursor-pointer text-black text-[24px] py-0' onClick={closeModal}>&times;</a>
               </div>
+              <form className="p-4 md:p-5">
+                <div className="grid gap-4 mb-4 grid-cols-2">
+                  <div className="col-start-1">
+                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
+                    <input value={firstname} onChange={(event) => setFirstname(event.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="John" required />
+                  </div>
+                  <div className="col-start-2">
+                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
+                    <input value={lastname} onChange={(event) => setLastname(event.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Wick" required />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
+                    <input value={phone} onChange={(event) => setPhone(event.target.value)} type="number" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="0101010101" required />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                    <input value={email} onChange={(event) => setEmail(event.target.value)} type="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="jewelryStore@gmail.com" required />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+                    <input value={address} onChange={(event) => setAddress(event.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Jewelry Store" required />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender</label>
+                    <select value={gender} onChange={(event) => setGender(event.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
+                  </div>
+                </div>
+                <button onClick={(event) => {
+                  event.preventDefault();
+                  handleShowAddCus();
+                }} type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                  <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                  Add new customer
+                </button>
+              </form>
             </div>
-          )}
-        </Popup>
-
-        <div className="h-[75vh] flex justify-center overflow-y-auto">
+          </div>
+        </Modal>
+        <div className="h-[75vh] flex justify-center overflow-y-auto mb-2">
           <div className="w-[800px] overflow-hidden overflow-y-auto">
             <table className="font-inter w-full table-auto border-separate border-spacing-y-1 overflow-y-scroll text-left md:overflow-auto">
               <thead className="w-full rounded-lg bg-[#222E3A]/[6%] text-base font-semibold text-white">
@@ -236,7 +320,7 @@ const Customer = () => {
                     <td className="text-sm font-normal text-[#637381]">
                       <button
                         onClick={() => handleCheckItem(item)}
-                        className="my-2 mx-0 border border-white bg-[#4741b1d7] text-white rounded-md transition duration-200 ease-in-out hover:bg-[#1d3279] active:bg-[#4741b174] focus:outline-none"
+                        className="my-2 mx-0 border border-white p-2 bg-[#4741b1d7] text-white rounded-md transition duration-200 ease-in-out hover:bg-[#1d3279] active:bg-[#4741b174] focus:outline-none"
                       >
                         Apply
                       </button>
@@ -255,13 +339,13 @@ const Customer = () => {
           pageClassName="mx-1"
           pageLinkClassName="px-3 py-2 rounded hover:bg-gray-200 text-black"
           previousClassName="mx-1"
-          previousLinkClassName="px-3 py-2 rounded hover:bg-gray-200"
+          previousLinkClassName="px-3 py-2 h-0 rounded hover:bg-gray-200"
           nextClassName="mx-1"
-          nextLinkClassName="px-3 py-2 rounded hover:bg-gray-200"
+          nextLinkClassName="px-3 py-2 h-0 rounded hover:bg-gray-200"
           breakLabel="..."
           breakClassName="mx-1 "
-          breakLinkClassName="px-3 py-2 text-black rounded hover:bg-gray-200"
-          containerClassName="flex justify-center items-center space-x-4"
+          breakLinkClassName="px-3 h-0 py-2 text-black rounded hover:bg-gray-200"
+          containerClassName="flex justify-center items-center space-x-4 h-0"
           activeClassName="bg-blue-500 text-white rounded-xl"
           renderOnZeroPageCount={null}
           previousLabel={

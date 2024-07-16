@@ -16,25 +16,27 @@ const Public = () => {
   }, [navigate]);
 
   // Check if the current route is either /promotion or /return_ex
-  const hideSidebarRight = location.pathname.includes('/promotion') || location.pathname.includes('/purchase') || location.pathname.includes('/searchInvoice') ;
+  const hideSidebarRight = location.pathname.includes('/promotion') || location.pathname.includes('/purchase') || location.pathname.includes('/searchInvoice') || location.pathname.includes('/screengold');
+  const hideSidebarLeft = location.pathname.includes('/screengold') 
   const activeSidebarForBuy = location.pathname.includes('/purchase/buyIn') 
   return (
     <div className='w-full flex h-[100vh]'>
-      <div className='w-[240px] overflow-y-scroll flex-none bg-[#5D5FEF]'>
+         {!hideSidebarLeft && (
+      <div className='w-[240px] overflow-y-scroll flex-none bg-[#211758]'>
         <SidebarLeft />
       </div>
-
+ )}
       <div className='flex-auto border'>
-        <div className='h-[95%] flex justify-center w-full'><Outlet/></div>
+        <div className='h-[100%] flex justify-center w-full bg-[#ccccd481]'><Outlet/></div>
       </div>
 
       {!hideSidebarRight && (
-        <div className='w-[400px] flex-none bg-[#56565821]'>
+        <div className='w-[400px] flex-none bg-[#ccccd481]'>
           <SidebarRight />
         </div>
       )}
       {activeSidebarForBuy && (
-        <div className='w-[400px] flex-none bg-[#56565821]'>
+        <div className='w-[400px] flex-none bg-[#ccccd481]'>
           <SidebarForBuy />
         </div>
       )}

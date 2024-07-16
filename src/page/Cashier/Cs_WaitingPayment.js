@@ -275,7 +275,7 @@ const Cs_WaitingPayment = () => {
       customerId: item.customerId,
       createDate: createDate,
       amount: item.amount,
-      returnUrl: 'https://swp-front-end-deploy-v2.vercel.app/cs_public/payment-result'
+      returnUrl: 'http://localhost:3000/cs_public/payment-result'
     };
     console.log('VNPay request', data);
 

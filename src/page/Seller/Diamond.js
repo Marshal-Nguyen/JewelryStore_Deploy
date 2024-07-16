@@ -151,10 +151,10 @@ const Ring = () => {
           {listRing && listRing.length > 0 &&
             listRing.filter(item => item.categoryId === 7).map((item, index) => {
               return (
-                <div key={`ring-${index}`} class="relative flex flex-col justify-center items-center w-[200px] px-[20px] pb-8 h-[280px] bg-[#fff] shadow-xl rounded-lg mb-2">
-                  <div className=' bg-[#fff] rounded-md shadow-md'>
-                    <img class="mt-0 w-28 h-28  rounded-lg hover:-translate-y-30 duration-700 hover:scale-125" src={item.img} />
-                  </div>
+                <div key={`diamond-${index}`} class="relative flex flex-col justify-center items-center w-[200px] px-[20px] pb-8 h-[280px] bg-[#fff] shadow-xl rounded-lg mb-2">
+                <div className='bg-[#fff] rounded-lg shadow-[#918888] shadow-md'>
+                  <img class="mt-2 w-24 h-24 rounded-lg hover:-translate-y-30 duration-700 hover:scale-125" src={item.img} />
+                </div>
                   <div class="max-w-sm h-auto">
 
                     <div class="absolute top-[10px] w-full left-0 p-1 sm:justify-between">
@@ -167,15 +167,15 @@ const Ring = () => {
                         <p class="text-[#121212] font-semibold text-sm line-through">{formatCurrency(item.productValue)}</p>
                       </div>
                     </div>
-                    <div class="absolute bottom-[-10px] right-0 w-full flex justify-around items-center">
+                    <div class="absolute bottom-[5px] right-0 w-full flex justify-around items-center">
                       <button onClick={() => handleDetailClick(item.code)} class="px-3 bg-[#3b9c7f] p-1 rounded-md text-white font-semibold shadow-md shadow-[#87A89E] hover:ring-2 ring-blue-400 hover:scale-75 duration-500">Details</button>
                       {item.status !== 'inactive' && (
-                        <button onClick={() => dispatch(addProduct(item))} class="px-2 border-2 border-white p-1 rounded-md text-white font-semibold shadow-lg shadow-white hover:scale-75 duration-500">Add to Cart</button>
+                        <button onClick={() => dispatch(addProduct(item))} class="px-2 border-2 bg-[#241c82] border-white p-1 rounded-md text-white font-semibold shadow-lg shadow-white hover:scale-75 duration-500">Add to Cart</button>
                       )}
                       {item.status == 'inactive' && (
                         <button class="px-2 border-2 bg-[#ff2929] border-white p-1 rounded-md text-white font-semibold shadow-lg shadow-white">Sold out</button>
-                      )}
-                    </div>
+                      )}         
+                       </div>
                   </div>
                 </div>
               )

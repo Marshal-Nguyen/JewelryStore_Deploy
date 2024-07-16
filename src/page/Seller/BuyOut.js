@@ -43,50 +43,41 @@ const BuyOut = () => {
     setQuantity('');
   };
   useEffect(() => {
-   
-  }, [materialId]); 
+    MaterialID();
+  }, []);
+  const [materials, setMaterials] = useState([]);
+
   const MaterialID = async () => {
-      try {
-        const res = await axios.get(`https://jssatsproject.azurewebsites.net/api/Material/getall`);
-        setMaterialId(res.data.data)
-      } catch (error) {
-        console.error('Error fetching material:', error); 
-        toast.error('Error fetching material');
-      }
-  }
-  const getInvoiceCode = async () => {
     try {
-      console.log(`Fetching invoice for code: ${InvoiceCode}`); // Add logging
-      const res = await axios.get(`https://jssatsproject.azurewebsites.net/api/BuyOrder/CheckOrder?orderCode=${InvoiceCode}`);
-      dispatch(addCodeOrder(InvoiceCode))
-      console.log('API response:', res); // Add logging
-
-      if (res && res.data) {
-        const Invoice = res.data;
-        console.log('Invoice data:', Invoice); // Add logging
-
-        if (Invoice && typeof Invoice === 'object') {
-          setListInvoice(Invoice);
-          console.log('ListInvoice state set:', Invoice); // Add logging
-        } else {
-          toast.error('Invalid invoice data');
-        }
-      } else {
-        toast.error('Invalid response structure');
-      }
+      const res = await axios.get('https://jssatsproject.azurewebsites.net/api/Material/getall');
+      setMaterials(res.data.data); // Store fetched data in the state
     } catch (error) {
-      console.error('Error fetching invoice:', error); // Add logging
-      toast.error('Error fetching invoice');
+      console.error('Error fetching material:', error);
+      toast.error('Error fetching material');
     }
   };
 
   useEffect(() => {
+    CategotyID();
+  }, []);
+  const [category, setCategory] = useState([]);
+
+  const CategotyID = async () => {
+    try {
+      const res = await axios.get('https://jssatsproject.azurewebsites.net/api/productcategory/getall');
+      setCategory(res.data.data); // Store fetched data in the state
+    } catch (error) {
+      console.error('Error fetching material:', error);
+      toast.error('Error fetching material');
+    }
+  };
+  
+  
+  useEffect(() => {
     console.log('ListInvoice state updated:', ListInvoice); // Add logging
   }, [ListInvoice]);
 
-  function formatPrice(price) {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
+
   const getCustormer = async () => {
     // event.preventDefault();
     try {
@@ -119,7 +110,7 @@ const BuyOut = () => {
     console.log(orderData)
     try {
       await axios.post('https://jssatsproject.azurewebsites.net/api/BuyOrder/CreateNonCompanyOrder', orderData);
-      setListInforCustomer(null); setInvoiceCode(''); 
+      setListInforCustomer(null); setInvoiceCode('');
       setCustomerPhone('');
       setDescription('')
       dispatch(clearCustomerInfo());
@@ -144,7 +135,7 @@ const BuyOut = () => {
           </div>
 
           <div className="flex py-4 gap-2.5">
-            <div className="w-12/12 h-14 flex rounded-lg border-2 border-solid border-gray-100 items-center">
+            <div className="w-12/12 h-14 flex rounded-lg border-2 border-solid border-[#211758b4]  items-center">
               <input
                 value={CustomerPhone}
                 onChange={(event) => setCustomerPhone(event.target.value)}
@@ -184,9 +175,9 @@ const BuyOut = () => {
                     className="w-12/12 h-14 px-4 bg-transparent focus:outline-none text-black"
                   />
                 </div>
-        
+
                 <div className="w-12/12 h-14 flex rounded-lg justify-center items-center">
-                   <button onClick={handleCreateOrder} className='w-full mx-6 bg-[#309c6a]' type="submit">Create Order</button>
+                  <button onClick={handleCreateOrder} className='w-full mx-6 p-2 rounded bg-[#309c6a]' type="submit">Create Order</button>
                 </div>
               </>
             )}
@@ -196,9 +187,9 @@ const BuyOut = () => {
           <form onSubmit={(e) => { e.preventDefault(); handleAddProduct(); }}
             className='grid grid-cols-4'
           >
-            <div className="w-11/12 mb-2 h-14 flex rounded-lg border-2 border-solid border-gray-100 items-center">
+            <div className="w-11/12 px-2 mb-2 h-14 flex rounded-lg border-2 border-solid border-[#211758b4] items-center">
               <input
-                className="w-9/12 h-14 px-4 bg-transparent focus:outline-none text-black"
+                className="w-full h-14 text-center bg-transparent focus:outline-none text-black"
                 type="text"
                 placeholder="Product Name"
                 value={productName}
@@ -206,46 +197,53 @@ const BuyOut = () => {
                 required
               />
             </div>
-            <div className="w-11/12  h-14 flex rounded-lg border-2 border-solid border-gray-100 items-center">
+            <div className="w-11/12 px-2 h-14 flex rounded-lg border-2 border-solid border-[#211758b4]  items-center">
               <input
-                className="w-9/12 h-14 px-4 bg-transparent focus:outline-none text-black"
+                className="w-full h-14 text-center bg-transparent focus:outline-none text-black"
                 type="text"
                 placeholder="Diamond Grading Code"
                 value={diamondGradingCode}
                 onChange={(e) => setDiamondGradingCode(e.target.value)}
               />
             </div>
-            <div className="w-11/12  h-14 flex rounded-lg border-2 border-solid border-gray-100 items-center">
-              <input
-                className="w-9/12 h-14 px-4 bg-transparent focus:outline-none text-black"
-                type="number"
-                placeholder="Material ID"
+            <div className="w-11/12 h-14 flex rounded-lg border-2 border-solid border-[#211758b4] items-center px-2">
+              <select
+                className="w-full h-14 text-center bg-transparent focus:outline-none text-black"
                 value={materialId}
                 onChange={(e) => setMaterialId(e.target.value)}
-              />
+                required
+              >
+                <option value="" disabled>Select Material</option>
+                {materials.map((material) => (
+                  <option key={material.id} value={material.id}>{material.name}</option>
+                ))}
+              </select>
             </div>
-            <div className="w-11/12  h-14 flex rounded-lg border-2 border-solid border-gray-100 items-center">
+            <div className="w-11/12 px-2 h-14 flex rounded-lg border-2 border-solid border-[#211758b4]  items-center">
               <input
-                className="w-9/12 h-14 px-4 bg-transparent focus:outline-none text-black"
+                className="w-full h-14 text-center bg-transparent focus:outline-none text-black"
                 type="number"
                 placeholder="Material Weight"
                 value={materialWeight}
                 onChange={(e) => setMaterialWeight(e.target.value)}
               />
             </div>
-            <div className="w-11/12  h-14 flex rounded-lg border-2 border-solid border-gray-100 items-center">
-              <input
-                className="w-9/12 h-14 px-4 bg-transparent focus:outline-none text-black"
-                type="number"
-                placeholder="Category Type ID"
+            <div className="w-11/12 h-14 flex rounded-lg border-2 border-solid border-[#211758b4] items-center px-2">
+              <select
+                className="w-full h-14 text-center bg-transparent focus:outline-none text-black"
                 value={categoryTypeId}
                 onChange={(e) => setCategoryTypeId(e.target.value)}
                 required
-              />
+              >
+                <option value="" disabled>Select Category</option>
+                {category.map((category) => (
+                  <option key={category.id} value={category.id}>{category.name}</option>
+                ))}
+              </select>
             </div>
-            <div className="w-11/12  h-14 flex rounded-lg border-2 border-solid border-gray-100 items-center">
+            <div className="w-11/12 px-2 h-14 flex rounded-lg border-2 border-solid border-[#211758b4]  items-center">
               <input
-                className="w-9/12 h-14 px-4 bg-transparent focus:outline-none text-black"
+                className="w-full h-14 text-center bg-transparent focus:outline-none text-black"
                 type="number"
                 placeholder="Buy Price"
                 value={buyPrice}
@@ -253,10 +251,12 @@ const BuyOut = () => {
                 required
               />
             </div>
-            <div className="w-11/12  h-14 flex rounded-lg border-2 border-solid border-gray-100 items-center">
+            <div className="w-11/12 px-2 h-14 flex rounded-lg border-2 border-solid border-[#211758b4]  items-center">
               <input
-                className="w-9/12 h-14 px-4 bg-transparent focus:outline-none text-black"
+                className="w-full h-14 text-center bg-transparent focus:outline-none text-black"
                 type="number"
+                min ={1}
+                
                 placeholder="Quantity"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
@@ -264,7 +264,7 @@ const BuyOut = () => {
               />
             </div>
             <div className="w-11/12  h-14 flex rounded-lg justify-center  items-center">
-              <button className='m-0' type="submit">Add Product</button>
+              <button className='m-0 bg-[#211758e9] rounded p-2' type="submit">Add Product</button>
             </div>
           </form>
 
@@ -294,8 +294,8 @@ const BuyOut = () => {
                       <td class="whitespace-nowrap px-4 py-2 text-center">{product.buyPrice}</td>
                       <td class="whitespace-nowrap px-4 py-2">{product.quantity}</td>
                       <td class="whitespace-nowrap px-4 py-2">
-                        <button className='bg-white' onClick = {() => dispatch(removeProductFromList(index))}><MdDeleteOutline color='red'/></button></td>
-                      </tr>
+                        <button className='bg-white' onClick={() => dispatch(removeProductFromList(index))}><MdDeleteOutline color='red' /></button></td>
+                    </tr>
                   ))}
                 </tbody>
               </table>
