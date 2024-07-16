@@ -3,8 +3,6 @@ const path = {
     // Seller
     PUBLIC: '/',
     DIAMOND: '',
-    LOGIN: 'login',
-    STAR: '*',
     CUSTOMER: 'customer',
     JEWELRY: 'jewelry',
     NECKLACE: 'necklace',

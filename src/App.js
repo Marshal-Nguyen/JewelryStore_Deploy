@@ -70,7 +70,7 @@ function App() {
 
         <Routes>
    
-          {/* admin */}
+       
         
           {/* Seller */}
           <Route path={path.PUBLIC} element={<Public />}>
