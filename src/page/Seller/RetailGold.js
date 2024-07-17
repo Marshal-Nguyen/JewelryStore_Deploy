@@ -32,7 +32,17 @@ const Ring = () => {
 
   const getRing = async (page) => {
     try {
-      let res = await fetchAllReGold(page);
+      const token = localStorage.getItem('token')
+      if(!token){
+        throw new Error('No token found')
+      }
+      const res = await axios.get(
+        `https://jssatsproject.azurewebsites.net/api/product/getall?categoryID=5&pageIndex=${page}&pageSize=12&ascending=true&includeNullStalls=false`,{
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+        });
+      // let res = await fetchAllBangles(page);
       if (res && res.data && res.data.data) {
         setListRing(res.data.data);
         setTotalProduct(res.data.totalElements);
@@ -41,7 +51,7 @@ const Ring = () => {
     } catch (error) {
       console.error('Error fetching rings:', error);
       toast.error('Failed to fetch rings');
-    } 
+    }
   };
   const closeModal = () => {
     setIsModalOpen(false);
@@ -164,15 +174,14 @@ const Ring = () => {
                         <p class="text-[#121212] font-semibold text-sm line-through">{formatCurrency(item.productValue)}</p>
                       </div>
                     </div>
-                    <div class="absolute bottom-[5px] right-0 w-full flex justify-around items-center">
+                    <div class="absolute bottom-[-10px] right-0 w-full flex justify-around items-center">
                       <button onClick={() => handleDetailClick(item.code)} class="px-3 bg-[#3b9c7f] p-1 rounded-md text-white font-semibold shadow-md shadow-[#87A89E] hover:ring-2 ring-blue-400 hover:scale-75 duration-500">Details</button>
                       {item.status !== 'inactive' && (
-                        <button onClick={() => dispatch(addProduct(item))} class="px-2 border-2 bg-[#241c82] border-white p-1 rounded-md text-white font-semibold shadow-lg shadow-white hover:scale-75 duration-500">Add to Cart</button>
+                        <button onClick={() => dispatch(addProduct(item))} class="px-2 border-2 border-white p-1 rounded-md text-white font-semibold shadow-lg shadow-white hover:scale-75 duration-500">Add to Cart</button>
                       )}
                       {item.status == 'inactive' && (
                         <button class="px-2 border-2 bg-[#ff2929] border-white p-1 rounded-md text-white font-semibold shadow-lg shadow-white">Sold out</button>
-                      )}         
-                       </div>
+                      )}                    </div>
                   </div>
                 </div>
               )

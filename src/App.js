@@ -8,7 +8,9 @@ import { Public, Ring, Diamond, Customer, Jewelry, Necklace, Earring, Bangles, W
 
 import { Cs_Public, Cs_Complete, Cs_Revenue, Cs_OnProcess, Cs_WaitingPayment, Cs_BuyProduct, Cs_OnProcessBuy, Cs_CompleteBuy, PaymentResult, Cs_Bill } from './page/Cashier';
 
-
+import Login from './page/Home/Login';
+import Admin from './page/Admin/Admin';
+import Home from './page/Home/Home';
 import path from './ultis/path'
 import Cs_Order from './page/Cashier/Cs_Order';
 import Dashboard from './page/Admin/Dashboard'
@@ -69,9 +71,71 @@ function App() {
       <div className=''>
 
         <Routes>
-   
-       
-        
+          {/* home */}
+          <Route path={path.HOME} element={<Login />} />
+          <Route path={path.LOGIN} element={<Login />} />
+          {/* admin */}
+          <Route path={path.ADMIN} element={<Admin />} >
+            <Route path={path.ADMIN} element={<Dashboard />} />
+            <Route path={path.DASHBOARD} element={<Dashboard />} />
+
+            {/* <Route path={path.REPORT} element={<Report />} exact> </Route> */}
+            <Route path={path.INVOICE} element={<InvoiceMana />} />
+            <Route path={path.PAYMENT} element={<Payment />} />
+            <Route path={path.EMPLOYEE} element={<EmployeeMana />} />
+            <Route path={path.STALL} element={<Stall />} />
+
+
+            {/* <Route path={path.MANAGE} element={<Manage />} ></Route> */}
+            <Route path={path.PRODUCTADMIN} element={<ProductAdmin />} />
+            <Route path={path.CUSTOMERADMIN} element={<CustomerAdmin />} />
+            <Route path="detailCustomer" element={<CustomerDetail />} />
+
+            <Route path={path.STAFF} element={<Staff />} />
+            <Route path={path.POINT} element={<Point />} />
+
+            <Route path={path.PROMOTIONLIST} element={<PromotionList />} />
+            <Route path={path.PROMOTIONREQUEST} element={<PromotionRequest />} />
+            {/* <Route path={path.PROMOTIONADMIN} element={<PromotionAdmin />} >
+            </Route> */}
+
+            <Route path={path.RETURNPOLICY} element={<ReturnPolicy />} />
+          </Route >
+          {/* manager */}
+          <Route path={path.MANAGER} element={<Manager />}>
+            {/* <Route path={path.PRODUCTMANAGER} element={<ProductManager />} ></Route> */}
+            <Route path={path.MANAGER} element={<Dashboard />} />
+            <Route path={path.PRICE} element={<Price />} />
+            <Route path={path.MATERIAL} element={<Material />} />
+
+            <Route path={path.DIAMONDMANAGER} element={<DiamondManager />} />
+            <Route path={'createProduct'} element={<CreateProduct />} />
+            <Route path={path.JEWELRY} element={<JewelryManager />} />
+            <Route path={path.RETAILGOLDMANAGER} element={<RetailGoldManager />} />
+            <Route path={path.WHOLESALEGOLD} element={<WholesaleGoldManager />} />
+
+            <Route path={path.DIAMONDWAREHOUSE} element={<DiamondWarehouseManager />} />
+            <Route path={path.JEWELRYWAREHOUSE} element={<JewelryWarehouseManager />} />
+            <Route path={path.WHOLESALEGOLDWAREHOUSE} element={<WholesaleGoldWarehouseManager />} />
+            <Route path={path.RETAILGOLDWAREHOUSE} element={<RetailGoldWarehouseManager />} />
+
+            <Route path={path.DASHBOARD} element={<Dashboard />} />
+            <Route path={path.INVOICE} element={<InvoiceMana />} />
+            <Route path={path.PRODUCSOLD} element={<ProductSoldMana />} />
+            <Route path={path.EMPLOYEE} element={<EmployeeMana />} />
+            <Route path={path.STALL} element={<Stall />} />
+            <Route path={path.PAYMENT} element={<Payment />} />
+            {/* <Route path={path.PRODUCTMANA} element={<ProductMana />} /> */}
+            <Route path={path.CUSTOMERMANA} element={<CustomerMana />} />
+            <Route path={path.STAFF} element={<StaffMana />} />
+            {/* <Route path={path.POINT} element={<PointMana />} /> */}
+            <Route path={path.PROMOTIONLIST} element={<PromotionListMana />} />
+            <Route path={path.PROMOTIONREQUEST} element={<PromotionRequestMana />} />
+            <Route path={path.SPECIALDISCOUNT} element={<SpecialDiscountRequest />} />
+            <Route path={path.RETURNPOLICY} element={<ReturnPolicyView />} />
+            <Route path="detailSpecialRequest" element={<DetailPage />} />
+            <Route path="detailCustomer" element={<CustomerDetail />} />
+          </Route>
           {/* Seller */}
           <Route path={path.PUBLIC} element={<Public />}>
             <Route path={path.DIAMOND} element={<Diamond />} />

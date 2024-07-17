@@ -24,7 +24,7 @@ const FormatDate = ({ isoString }) => {
 };
 const CompleteSeller = () => {
   const [currentTime, setCurrentTime] = useState(new Date().toISOString());
-  const [listInvoice, setlistInvoice] = useState([]); // list full invoice
+  const [listInvoice, setListInvoice] = useState([]); // list full invoice
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [IdOrder, setIdOrder] = useState('')
   const [ChosePayMethodID, setChosePayMethodID] = useState(3);
@@ -44,14 +44,24 @@ const CompleteSeller = () => {
 
   const getInvoice = async (page) => {
     try {
-      let res = await fetchStatusInvoice('completed', page);
-      if (res?.data?.data) {
-        setlistInvoice(res.data.data);
+      const token = localStorage.getItem('token')
+      if(!token){
+        throw new Error('No token found')
+      }
+      const res = await axios.get(`https://jssatsproject.azurewebsites.net/api/sellorder/getall?statusList=completed&ascending=true&pageIndex=${page}&pageSize=10`,{
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+        });
+      // let res = await fetchAllBangles(page);
+      if (res && res.data && res.data.data) {
+        setListInvoice(res.data.data);
         setTotalProduct(res.data.totalElements);
         setTotalPage(res.data.totalPages);
       }
     } catch (error) {
-      console.error('Error fetching orders:', error);
+      console.error('Error fetching rings:', error);
+      toast.error('Failed to fetch rings');
     }
   };
 

@@ -32,7 +32,17 @@ const Ring = () => {
 
   const getRing = async (page) => {
     try {
-      let res = await fetchAllWhGold(page);
+      const token = localStorage.getItem('token')
+      if(!token){
+        throw new Error('No token found')
+      }
+      const res = await axios.get(
+        `https://jssatsproject.azurewebsites.net/api/product/getall?categoryID=6&pageIndex=${page}&pageSize=12&ascending=true&includeNullStalls=false`,{
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+        });
+      // let res = await fetchAllBangles(page);
       if (res && res.data && res.data.data) {
         setListRing(res.data.data);
         setTotalProduct(res.data.totalElements);
@@ -41,39 +51,13 @@ const Ring = () => {
     } catch (error) {
       console.error('Error fetching rings:', error);
       toast.error('Failed to fetch rings');
-    } 
+    }
   };
   const closeModal = () => {
     setIsModalOpen(false);
     setselectedJewelry(null);
   };
-  const handleDetailClick = async (id) => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error("No token found");
-      }
-      const res = await axios.get(`https://jssatsproject.azurewebsites.net/api/Product/getbycode?code=${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      console.log('ressssss',res)
-      if (res && res.data && res.data.data) {
-        const details = res.data[0];
-        setselectedJewelry(details);
-        const resDiamond = await axios.get(`https://jssatsproject.azurewebsites.net/api/diamond/getbycode?code=${details.diamondCode}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        setselectedDiamond(resDiamond.data.data[0]);
-
-      }
-    } catch (error) {
-      console.error('Error fetching staff details:', error);
-    }
-  };
+ 
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('vi-VN', {
       style: 'currency',

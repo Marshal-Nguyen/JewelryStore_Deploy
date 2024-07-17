@@ -1,8 +1,13 @@
 const path = {
-
+    HOME: '/',
+    ADMIN: '/admin',
+    LOGIN: '/login',
+    MANAGER: '/manager',
     // Seller
-    PUBLIC: '/',
+    PUBLIC: '/public',
     DIAMOND: '',
+    LOGIN: 'login',
+    STAR: '*',
     CUSTOMER: 'customer',
     JEWELRY: 'jewelry',
     NECKLACE: 'necklace',
@@ -32,9 +37,48 @@ const path = {
     CS_ONPROCESSBUY: 'cs_onprocessBuy',
     CS_COMPLETEBUY: 'cs_completeBuy',
     PAYMENTRESULT: 'payment-result',
+// ADMIN
+    DASHBOARD: 'Dashboard',
+    MANAGE: 'Manage',
+    CUSTOMERADMIN: 'customeradmin',
+    PRODUCTADMIN: 'productadmin',
+    STAFF: 'staff',
+    POINT: 'point',
+
+    REPORT: 'Report',
+    INVOICE: 'Invoice',
+    PRODUCSOLD: 'ProductSold',
+    EMPLOYEE: 'Employee',
+
+    PROMOTIONADMIN: 'Promotionadmin',
+    PROMOTIONLIST: 'promotionlist',
+    PROMOTIONREQUEST: 'promotionrequest',
+
+    RETURNPOLICY: 'ReturnPolicy',
+
+    VOIDBILL: 'VoidBill',
+
+    // end admin
 
 
-   
+    // manager
+    WAREHOUSEMANAGER: 'warehouseManager',
+    DIAMONDWAREHOUSE: 'diamondWarehouse',
+    JEWELRYWAREHOUSE: 'jewelryWarehouse',
+    WHOLESALEGOLDWAREHOUSE: 'wholesalegoldWarehouse',
+    RETAILGOLDWAREHOUSE: 'rgoldWarehouse',
+    PRODUCTMANAGER: 'productManager',
+    DIAMONDMANAGER: 'diamond',
+    RETAILGOLDMANAGER: 'rgold',
+    PROMOTIONMANAGER: 'Promotionmanager',
+    CUSTOMERMANA: 'customerMana',
+    PRODUCTMANA: 'productMana',
+    STALL: 'Stall',
+    PRICE: 'price',
+    MATERIAL: 'material',
+    SPECIALDISCOUNT: 'specialDiscount',
+    PAYMENT: 'Payment'
+    // end manager
 
 
 }

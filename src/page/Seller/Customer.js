@@ -40,15 +40,24 @@ const Customer = () => {
 
   const getCustomer = async (page) => {
     try {
-      const res = await fetchAllCustomer(page)
-      if (res.data && res.data.data) {
+      const token = localStorage.getItem('token')
+      if(!token){
+        throw new Error('No token found')
+      }
+      const res = await axios.get(`https://jssatsproject.azurewebsites.net/api/Customer/GetAll?pageIndex=${page}`,{
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+        });
+      // let res = await fetchAllBangles(page);
+      if (res && res.data && res.data.data) {
         setListCustomer(res.data.data);
         setTotalProduct(res.data.totalElements);
         setTotalPage(res.data.totalPages);
       }
     } catch (error) {
-      console.error('Error fetching customers:', error);
-      toast.error('Failed to fetch customers');
+      console.error('Error fetching rings:', error);
+      toast.error('Failed to fetch rings');
     }
   };
 
@@ -67,8 +76,16 @@ const Customer = () => {
 
   const getCustomerSearch = async (searchTerm, page) => {
     try {
+      const token = localStorage.getItem('token')
+      if(!token){
+        throw new Error('No token found')
+      }
       const res = await axios.get(
-        `https://jssatsproject.azurewebsites.net/api/Customer/Search?searchTerm=${searchTerm}&pageIndex=${page}&pageSize=10`
+        `https://jssatsproject.azurewebsites.net/api/Customer/Search?searchTerm=${searchTerm}&pageIndex=${page}&pageSize=10`,{
+          headers:{
+            Authorization: `Bearer ${token}`
+          }
+        }
       );
       if (res.data && res.data.data) {
         setListCustomer(res.data.data);
@@ -239,7 +256,7 @@ const Customer = () => {
 
         <button
           type="button"
-          className="m-0 p-2 ml-16 mb-2 flex justify-center items-center bg-[#00AC7C] text-white gap-1 cursor-pointer tracking-widest rounded-md hover:bg-[#00ac7b85] duration-300 hover:gap-2 hover:translate-x-3"
+          className="m-0 ml-16 mb-2 flex justify-center items-center bg-[#00AC7C] text-white gap-1 cursor-pointer tracking-widest rounded-md hover:bg-[#00ac7b85] duration-300 hover:gap-2 hover:translate-x-3"
           onClick={openModal}
         >          Add
           <svg className="w-5 h-5" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
@@ -320,7 +337,7 @@ const Customer = () => {
                     <td className="text-sm font-normal text-[#637381]">
                       <button
                         onClick={() => handleCheckItem(item)}
-                        className="my-2 mx-0 border border-white p-2 bg-[#4741b1d7] text-white rounded-md transition duration-200 ease-in-out hover:bg-[#1d3279] active:bg-[#4741b174] focus:outline-none"
+                        className="my-2 mx-0 border border-white bg-[#4741b1d7] text-white rounded-md transition duration-200 ease-in-out hover:bg-[#1d3279] active:bg-[#4741b174] focus:outline-none"
                       >
                         Apply
                       </button>

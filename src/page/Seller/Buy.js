@@ -134,7 +134,7 @@ const Buy = () => {
                       <td class="whitespace-nowrap px-0 py-4 text-center">{product.quantity}</td>
                       <td class="whitespace-nowrap px-6 py-4">{formatPrice(product.estimateBuyPrice)}</td>
                       <td scope="col" class="px-0 py-4 text-center">{product.reasonForEstimateBuyPrice}</td>
-                      <td scope="col" class="px-6 py-4"><button className='bg-blue-900 text-white p-2 rounded' onClick={()=>getProductBuy(product,ListInvoice.customerPhoneNumber)}>Apply</button></td>
+                      <td scope="col" class="px-6 py-4"><button onClick={()=>getProductBuy(product,ListInvoice.customerPhoneNumber)}>Apply</button></td>
                     </tr>
                   ))}
                 </tbody>

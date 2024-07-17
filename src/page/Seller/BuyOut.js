@@ -177,7 +177,7 @@ const BuyOut = () => {
                 </div>
 
                 <div className="w-12/12 h-14 flex rounded-lg justify-center items-center">
-                  <button onClick={handleCreateOrder} className='w-full mx-6 p-2 rounded bg-[#309c6a]' type="submit">Create Order</button>
+                  <button onClick={handleCreateOrder} className='w-full mx-6 bg-[#309c6a]' type="submit">Create Order</button>
                 </div>
               </>
             )}
@@ -264,7 +264,7 @@ const BuyOut = () => {
               />
             </div>
             <div className="w-11/12  h-14 flex rounded-lg justify-center  items-center">
-              <button className='m-0 bg-[#211758e9] rounded p-2' type="submit">Add Product</button>
+              <button className='m-0' type="submit">Add Product</button>
             </div>
           </form>
 
